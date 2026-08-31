@@ -1,0 +1,725 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>大阪〜和歌山〜淡路島 おでかけノート</title>
+<style>
+  :root{
+    --paper:#EFEAE0;
+    --paper-dark:#E3DCCB;
+    --ink:#1F3A5F;
+    --ink-soft:#4A5D74;
+    --hanko:#B23A2E;
+    --moss:#4C7A6B;
+    --line:#C9BFA8;
+    --card:#FBF9F3;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--paper);
+    background-image:
+      radial-gradient(circle at 15% 8%, rgba(31,58,95,0.05) 0, transparent 40%),
+      radial-gradient(circle at 90% 90%, rgba(178,58,46,0.05) 0, transparent 40%);
+    font-family: "Hiragino Sans", "Yu Gothic", "Noto Sans JP", sans-serif;
+    color:var(--ink);
+    padding:0 0 84px;
+  }
+  header{
+    padding:22px 18px 14px;
+    border-bottom:2px solid var(--line);
+    background:var(--paper);
+    position:sticky; top:0; z-index:5;
+  }
+  header .stamp{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    font-size:11px;
+    letter-spacing:.08em;
+    color:var(--hanko);
+    border:1.5px solid var(--hanko);
+    border-radius:3px;
+    padding:2px 8px;
+    margin-bottom:8px;
+  }
+  h1{
+    font-family: "Hiragino Mincho ProN", "Yu Mincho", serif;
+    font-size:22px;
+    margin:0 0 4px;
+    line-height:1.4;
+    font-weight:600;
+  }
+  header p.sub{
+    margin:0;
+    font-size:12.5px;
+    color:var(--ink-soft);
+  }
+
+  .controls{
+    padding:14px 18px 0;
+  }
+  .mode-row{
+    display:flex;
+    gap:6px;
+    margin-bottom:12px;
+  }
+  .mode-btn{
+    flex:1;
+    text-align:center;
+    padding:9px 0;
+    border:1.5px solid var(--ink);
+    border-radius:8px;
+    background:var(--card);
+    color:var(--ink);
+    font-size:13.5px;
+    font-weight:600;
+    cursor:pointer;
+    transition:background .15s, color .15s;
+  }
+  .mode-btn.active{
+    background:var(--ink);
+    color:var(--paper);
+  }
+
+  .tabs{
+    display:flex;
+    gap:6px;
+    overflow-x:auto;
+    padding-bottom:10px;
+    scrollbar-width:none;
+  }
+  .tabs::-webkit-scrollbar{display:none;}
+  .tab{
+    flex:0 0 auto;
+    padding:6px 12px;
+    font-size:12.5px;
+    border-radius:999px;
+    border:1px solid var(--line);
+    background:var(--card);
+    color:var(--ink-soft);
+    cursor:pointer;
+    white-space:nowrap;
+  }
+  .tab.active{
+    background:var(--ink);
+    border-color:var(--ink);
+    color:var(--paper);
+    font-weight:600;
+  }
+
+  .area-heading{
+    margin:22px 18px 8px;
+    display:flex;
+    align-items:baseline;
+    gap:8px;
+  }
+  .area-heading .dot{
+    width:9px;height:9px;border-radius:50%;
+    background:var(--area-color, var(--moss));
+    flex:0 0 auto;
+  }
+  .area-heading h2{
+    font-family:"Hiragino Mincho ProN","Yu Mincho",serif;
+    font-size:16px;
+    margin:0;
+    font-weight:600;
+  }
+  .area-heading span{
+    font-size:11px;
+    color:var(--ink-soft);
+  }
+
+  .list{
+    padding:0 14px;
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+  }
+
+  .card{
+    position:relative;
+    background:var(--card);
+    border:1px solid var(--line);
+    border-left:5px solid var(--area-color, var(--moss));
+    border-radius:2px;
+    padding:12px 14px 12px 14px;
+  }
+  .card-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+    gap:8px;
+  }
+  .card-title-wrap{flex:1; min-width:0;}
+  .cat{
+    display:inline-block;
+    font-size:10.5px;
+    color:var(--hanko);
+    border:1px solid var(--hanko);
+    border-radius:999px;
+    padding:1px 8px;
+    margin-bottom:5px;
+  }
+  .name{
+    font-size:15px;
+    font-weight:700;
+    line-height:1.35;
+    color:var(--ink);
+  }
+  .note{
+    font-size:12.5px;
+    color:var(--ink-soft);
+    margin-top:5px;
+    line-height:1.5;
+  }
+  .meta{
+    font-size:11.5px;
+    color:var(--ink-soft);
+    margin-top:6px;
+  }
+
+  .fav-btn{
+    background:none;
+    border:none;
+    font-size:22px;
+    line-height:1;
+    cursor:pointer;
+    color:var(--line);
+    padding:2px 4px;
+    flex:0 0 auto;
+  }
+  .fav-btn.active{ color:var(--hanko); }
+
+  .actions{
+    display:flex;
+    gap:8px;
+    margin-top:10px;
+  }
+  .actions a{
+    flex:1;
+    text-align:center;
+    font-size:12.5px;
+    padding:7px 0;
+    border-radius:6px;
+    text-decoration:none;
+    border:1px solid var(--ink);
+    color:var(--ink);
+  }
+  .actions a.route{
+    background:var(--ink);
+    color:var(--paper);
+    border-color:var(--ink);
+  }
+
+  .empty{
+    text-align:center;
+    color:var(--ink-soft);
+    font-size:13px;
+    padding:40px 20px;
+  }
+
+  .footer-note{
+    margin:26px 18px 0;
+    font-size:11px;
+    color:var(--ink-soft);
+    line-height:1.6;
+    border-top:1px dashed var(--line);
+    padding-top:12px;
+  }
+
+  /* --- bottom nav --- */
+  .bottom-nav{
+    position:fixed;
+    left:0; right:0; bottom:0;
+    z-index:20;
+    background:var(--card);
+    border-top:1px solid var(--line);
+    display:flex;
+    justify-content:center;
+    padding:8px 0 calc(8px + env(safe-area-inset-bottom));
+    box-shadow:0 -2px 10px rgba(31,58,95,0.08);
+  }
+  .nav-fav-btn{
+    position:relative;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:2px;
+    background:none;
+    border:none;
+    color:var(--ink);
+    font-size:10.5px;
+    cursor:pointer;
+    padding:2px 22px;
+  }
+  .nav-fav-btn .icon{ font-size:20px; line-height:1; }
+  .nav-fav-btn .badge{
+    position:absolute;
+    top:-2px; right:14px;
+    background:var(--hanko);
+    color:var(--paper);
+    font-size:10px;
+    font-weight:700;
+    border-radius:999px;
+    min-width:16px;
+    height:16px;
+    line-height:16px;
+    text-align:center;
+    padding:0 3px;
+  }
+
+  /* --- favorite route sheet --- */
+  .sheet-overlay{
+    position:fixed; inset:0;
+    background:rgba(31,58,95,0.35);
+    z-index:30;
+    display:none;
+  }
+  .sheet-overlay.open{ display:block; }
+  .sheet{
+    position:fixed;
+    left:0; right:0; bottom:0;
+    z-index:31;
+    background:var(--paper);
+    border-top:2px solid var(--ink);
+    border-radius:14px 14px 0 0;
+    max-height:78vh;
+    display:flex;
+    flex-direction:column;
+    transform:translateY(100%);
+    transition:transform .2s ease-out;
+  }
+  .sheet.open{ transform:translateY(0); }
+  .sheet-handle{
+    width:36px; height:4px;
+    background:var(--line);
+    border-radius:999px;
+    margin:10px auto 4px;
+  }
+  .sheet-head{
+    padding:6px 18px 10px;
+    border-bottom:1px solid var(--line);
+  }
+  .sheet-head h3{
+    font-family:"Hiragino Mincho ProN","Yu Mincho",serif;
+    font-size:16px;
+    margin:0 0 4px;
+  }
+  .sheet-head p{
+    margin:0;
+    font-size:11.5px;
+    color:var(--ink-soft);
+  }
+  .sheet-body{
+    overflow-y:auto;
+    padding:10px 18px 4px;
+    flex:1;
+  }
+  .sheet-item{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:8px;
+    padding:9px 0;
+    border-bottom:1px solid var(--line);
+  }
+  .sheet-item:last-child{ border-bottom:none; }
+  .sheet-item .info{ min-width:0; }
+  .sheet-item .area-tag{
+    font-size:10px;
+    color:var(--ink-soft);
+  }
+  .sheet-item .nm{
+    font-size:13.5px;
+    font-weight:700;
+    line-height:1.3;
+  }
+  .sheet-item .remove{
+    flex:0 0 auto;
+    background:none;
+    border:none;
+    color:var(--hanko);
+    font-size:18px;
+    cursor:pointer;
+    padding:2px 6px;
+  }
+  .sheet-empty{
+    text-align:center;
+    color:var(--ink-soft);
+    font-size:12.5px;
+    padding:30px 10px;
+  }
+  .sheet-actions{
+    padding:12px 18px calc(14px + env(safe-area-inset-bottom));
+    border-top:1px solid var(--line);
+  }
+  .sheet-actions .go-btn{
+    display:block;
+    text-align:center;
+    text-decoration:none;
+    background:var(--ink);
+    color:var(--paper);
+    font-size:14px;
+    font-weight:700;
+    padding:11px 0;
+    border-radius:8px;
+  }
+  .sheet-actions .go-btn.disabled{
+    background:var(--line);
+    color:var(--ink-soft);
+    pointer-events:none;
+  }
+  .sheet-actions .hint{
+    font-size:10.5px;
+    color:var(--ink-soft);
+    margin:8px 2px 0;
+    line-height:1.5;
+  }
+  .sheet-actions .transit-links{
+    display:flex;
+    flex-direction:column;
+    gap:6px;
+  }
+  .sheet-actions .transit-links a{
+    display:block;
+    text-align:center;
+    text-decoration:none;
+    border:1px solid var(--ink);
+    color:var(--ink);
+    font-size:12.5px;
+    padding:8px 0;
+    border-radius:8px;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="stamp">TRIP NOTE ・ 大阪 → 和歌山 → 淡路島</div>
+  <h1>おでかけスポットまとめ</h1>
+  <p class="sub">気になる場所はハートで「お気に入り」。移動手段を選んでルートを開けます。</p>
+</header>
+
+<div class="controls">
+  <div class="mode-row">
+    <div class="mode-btn active" data-mode="driving">🚗 車で行く</div>
+    <div class="mode-btn" data-mode="transit">🚃 電車で行く</div>
+  </div>
+  <div class="tabs" id="tabs"></div>
+</div>
+
+<div id="lists"></div>
+
+<div class="footer-note">
+  ※ ルートボタンは現在地からの Google マップのルートを開きます（出発地は開いた画面で変更できます）。<br>
+  ※ 岬町・深日港からは高速船で淡路島(洲本方面)へ渡れます。深日港の観光案内所でチケット・時刻を確認できます。<br>
+  ※ 位置情報が確定できなかった一部スポット（ぶらくり丁のカフェ・ジェラート店・水辺のバー）はおおよその場所です。現地で商店街を歩いて探すのがおすすめです。
+</div>
+
+<div class="bottom-nav">
+  <button class="nav-fav-btn" id="navFavBtn">
+    <span class="icon">♥</span>
+    <span>お気に入りルート</span>
+    <span class="badge" id="favBadge" style="display:none;">0</span>
+  </button>
+</div>
+
+<div class="sheet-overlay" id="sheetOverlay"></div>
+<div class="sheet" id="favSheet">
+  <div class="sheet-handle"></div>
+  <div class="sheet-head">
+    <h3>お気に入りルート</h3>
+    <p id="sheetModeLabel">現在のモード：車で行く</p>
+  </div>
+  <div class="sheet-body" id="sheetBody"></div>
+  <div class="sheet-actions" id="sheetActions"></div>
+</div>
+
+<script>
+const AREA_COLORS = {
+  "なんば": "#1F3A5F",
+  "天王寺": "#7A5C3E",
+  "岬町・深日港": "#4C7A6B",
+  "淡路島": "#B23A2E",
+  "和歌山": "#5B6E3E"
+};
+
+const SPOTS = [
+  // なんば
+  {id:"namba-kirin", area:"なんば", cat:"ビアレストラン", name:"キリンシティプラス なんばCITY店",
+   lat:34.6618492, lng:135.5031599, placeId:"ChIJQSRsfmznAGARuJF7O84MUrk",
+   note:"なんばCITY南館1F。ビールと洋食を気軽に。"},
+  {id:"namba-king", area:"なんば", cat:"焼肉", name:"焼肉きんぐ namBaHIPS店",
+   lat:34.6675993, lng:135.5006679, placeId:"ChIJTcTV-avnAGAR1jT1JrASGoo",
+   note:"食べ放題の焼肉。namBa HIPS 7F。"},
+
+  // 天王寺
+  {id:"tennoji-daimatsu", area:"天王寺", cat:"焼肉ホルモン", name:"大衆焼き肉ホルモン 大松 天王寺MIO店",
+   lat:34.6469265, lng:135.5136926, placeId:"ChIJNe8v5prdAGAR2bWwZ_A9HNk",
+   note:"小皿でいろんな部位を楽しめる大衆焼肉。"},
+  {id:"tennoji-wakabayashi", area:"天王寺", cat:"中華酒場", name:"大衆中華酒場若林 天王寺MIO店",
+   lat:34.6475438, lng:135.5142123, placeId:"ChIJbUilhHfdAGARDiNt1DBdC_Q",
+   note:"天王寺駅から徒歩すぐの中華酒場。"},
+
+  // 岬町・深日港
+  {id:"misaki-michinoeki", area:"岬町・深日港", cat:"道の駅", name:"道の駅みさき",
+   lat:34.3257529, lng:135.1738331, placeId:"ChIJM2eh_U6wAGAR1B9M9mp44u4",
+   note:"地元野菜やお土産、観光協会の窓口も。"},
+  {id:"misaki-fuke-sanporta", area:"岬町・深日港", cat:"観光案内", name:"深日港観光案内所(サンポルタ)",
+   lat:34.3188701, lng:135.1424707, placeId:"ChIJ__-PfdyvAGARqveNxISfhQo",
+   note:"淡路島(洲本方面)行き高速船の窓口。お土産・レンタサイクルあり。"},
+  {id:"misaki-info", area:"岬町・深日港", cat:"観光案内", name:"岬町観光案内所",
+   lat:34.3247677, lng:135.1611651, placeId:"ChIJdxTLLOaxAGARFT3wE4PZDuk",
+   note:"みさき公園駅そば。パンフレットや地元グッズ。"},
+
+  // 淡路島
+  {id:"awaji-ashiyu", area:"淡路島", cat:"無料足湯", name:"洲本温泉 潮騒の湯・足湯",
+   lat:34.3401113, lng:134.9005861, placeId:"ChIJSwy5GZOxVDURoLgSEfrM8vk",
+   note:"洲本城のある三熊山のふもと。無料・タオル持参。"},
+  {id:"awaji-komichi", area:"淡路島", cat:"レトロな小道", name:"レトロこみち",
+   lat:34.3432138, lng:134.8933825, placeId:"ChIJ2dOrvsmxVDUR_0OEpgSC-2M",
+   note:"足湯からすぐ。カフェやかき氷店が並ぶ懐かしい通り。"},
+  {id:"awaji-library", area:"淡路島", cat:"図書館", name:"洲本図書館",
+   lat:34.3460282, lng:134.8945312, placeId:"ChIJAfizLbGxVDURTLkECoJmZPk",
+   note:"赤レンガが美しい図書館。休憩にも◎。"},
+  {id:"awaji-komodo56", area:"淡路島", cat:"商店街", name:"コモード56商店街",
+   lat:34.3414927, lng:134.8945078, placeId:"ChIJedVRKLaxVDURzwoC5H7-lxQ",
+   note:"洲本のアーケード商店街。お土産探しに。"},
+
+  // 和歌山
+  {id:"waka-aeon", area:"和歌山", cat:"ショッピングモール", name:"イオンモール和歌山",
+   lat:34.2764951, lng:135.1490504, placeId:"ChIJz6PR2P-xAGAR6ixQeFPEww8",
+   note:"和歌山市内へ向かう途中に。何でも揃う。"},
+  {id:"waka-tsutaya", area:"和歌山", cat:"本屋・図書館", name:"蔦屋書店（和歌山市民図書館）",
+   lat:34.2367241, lng:135.1675279, placeId:"ChIJweOPKfOzAGARDRU7z1CuGts",
+   note:"3階建て、屋上から和歌山城が見える。館内にスタバも。"},
+  {id:"waka-starbucks", area:"和歌山", cat:"カフェ", name:"スターバックス（蔦屋書店内）",
+   lat:34.2368221, lng:135.1673221, placeId:"ChIJa_fiEBGzAGARg9I8BBcDcS4",
+   note:"図書館1階、日当たり良好。"},
+  {id:"waka-labo", area:"和歌山", cat:"スパイスカレー", name:"spice dining LABO",
+   lat:34.2313542, lng:135.1762192, placeId:"ChIJP9aO-EazAGARFaDa8ca-MJQ",
+   note:"ライオンホルモンの近く。2種盛りカレーが人気。"},
+  {id:"waka-lion", area:"和歌山", cat:"ホルモン", name:"ライオンホルモン",
+   lat:34.2351891, lng:135.1686149, placeId:"ChIJDdzRLu2yAGAR_XPjn53pyTo",
+   note:"和歌山で人気の老舗ホルモン焼肉。"},
+  {id:"waka-yamatame", area:"和歌山", cat:"和歌山ラーメン", name:"山為食堂",
+   lat:34.2332887, lng:135.1711249, placeId:"ChIJ3UUFkOuyAGARNCDxaztJvrs",
+   note:"50年以上続く老舗。とんこつ醤油の濃厚ラーメン。"},
+  {id:"waka-rico-cafe", area:"和歌山", cat:"カフェ&バー", name:"Una rama de RICO",
+   lat:34.232148, lng:135.1795422, placeId:"ChIJvwnVbJSzAGAR34ufXtht-60",
+   note:"ゲストハウスRICO併設のカフェ&バー。バスクチーズケーキが名物。"},
+  {id:"waka-rico-guesthouse", area:"和歌山", cat:"ゲストハウス", name:"ゲストハウス RICO",
+   lat:34.2322031, lng:135.1795692, placeId:"ChIJBeK4DN2yAGARrbxlqBLGq9M",
+   note:"落ち着いた雰囲気でくつろげる宿。"},
+  {id:"waka-popolo", area:"和歌山", cat:"野菜カフェ・レストラン", name:"石窯ポポロ（にこにこ農園）",
+   lat:34.2336122, lng:135.1748595, placeId:null,
+   note:"ぶらくり丁商店街のポポロビル1F。「にこにこ農園」運営で有機野菜の石窯ピザ・プレートランチ。建物は2階建て、2階の利用状況は現地で要確認。"},
+  {id:"waka-flanders", area:"和歌山", cat:"アイス・ジェラート", name:"FLANDERS（フランダース）",
+   lat:34.233711, lng:135.172372, placeId:"ChIJR2y25euyAGAR6AGViVGKxtc",
+   note:"石窯ポポロのすぐ近く。手作りチョコレート＆ジェラートの人気店。"},
+  {id:"waka-mizube-bar", area:"和歌山", cat:"バー", name:"水辺のバー（京橋・市堀川沿い）",
+   lat:34.234, lng:135.180, placeId:null,
+   note:"和歌山市駅近く、市堀川の京橋のたもとに隠れ家的バーがあるとの情報あり。店名は現地で要確認。"}
+];
+
+const AREAS = ["すべて", "なんば", "天王寺", "岬町・深日港", "淡路島", "和歌山"];
+let currentArea = "すべて";
+let currentMode = "driving";
+let favorites = [];
+
+function mapsUrl(spot){
+  const q = spot.placeId ? `${spot.lat},${spot.lng}&query_place_id=${spot.placeId}` : `${spot.lat},${spot.lng}`;
+  return `https://www.google.com/maps/search/?api=1&query=${q}`;
+}
+function routeUrl(spot, mode){
+  return `https://www.google.com/maps/dir/?api=1&destination=${spot.lat},${spot.lng}&travelmode=${mode}`;
+}
+
+async function loadFavorites(){
+  try{
+    const res = await window.storage.get('kansai-trip-favorites', false);
+    favorites = res && res.value ? JSON.parse(res.value) : [];
+  }catch(e){
+    favorites = [];
+  }
+  render();
+}
+async function saveFavorites(){
+  try{
+    await window.storage.set('kansai-trip-favorites', JSON.stringify(favorites), false);
+  }catch(e){}
+}
+function toggleFav(id){
+  const i = favorites.indexOf(id);
+  if(i>-1) favorites.splice(i,1); else favorites.push(id);
+  saveFavorites();
+  render();
+}
+
+function renderTabs(){
+  const tabsEl = document.getElementById('tabs');
+  tabsEl.innerHTML = '';
+  AREAS.forEach(area=>{
+    const el = document.createElement('div');
+    el.className = 'tab' + (area===currentArea ? ' active' : '');
+    el.textContent = area === "すべて" ? "すべて" : area + (area==="なんば"||area==="天王寺"||area==="和歌山" ? "" : "");
+    el.onclick = ()=>{ currentArea = area; render(); };
+    tabsEl.appendChild(el);
+  });
+}
+
+function render(){
+  renderTabs();
+  document.querySelectorAll('.mode-btn').forEach(b=>{
+    b.classList.toggle('active', b.dataset.mode===currentMode);
+  });
+
+  const listsEl = document.getElementById('lists');
+  listsEl.innerHTML = '';
+
+  let areasToShow = currentArea === "すべて" ? AREAS.slice(1) : [currentArea];
+  let any = false;
+
+  areasToShow.forEach(area=>{
+    const spots = SPOTS.filter(s=>s.area===area);
+    if(spots.length===0) return;
+    any = true;
+
+    const heading = document.createElement('div');
+    heading.className = 'area-heading';
+    heading.innerHTML = `<span class="dot" style="--area-color:${AREA_COLORS[area]}"></span><h2>${area}</h2><span>(${spots.length}件)</span>`;
+    listsEl.appendChild(heading);
+
+    const listEl = document.createElement('div');
+    listEl.className = 'list';
+
+    spots.forEach(spot=>{
+      const isFav = favorites.includes(spot.id);
+      const card = document.createElement('div');
+      card.className = 'card';
+      card.style.setProperty('--area-color', AREA_COLORS[area]);
+      card.innerHTML = `
+        <div class="card-top">
+          <div class="card-title-wrap">
+            <span class="cat">${spot.cat}</span>
+            <div class="name">${spot.name}</div>
+            <div class="note">${spot.note}</div>
+          </div>
+          <button class="fav-btn ${isFav?'active':''}" aria-label="お気に入り">${isFav?'♥':'♡'}</button>
+        </div>
+        <div class="actions">
+          <a href="${mapsUrl(spot)}" target="_blank" rel="noopener">地図で見る</a>
+          <a class="route" href="${routeUrl(spot, currentMode)}" target="_blank" rel="noopener">${currentMode==='driving'?'車でルート':'電車でルート'}</a>
+        </div>
+      `;
+      card.querySelector('.fav-btn').onclick = ()=>toggleFav(spot.id);
+      listEl.appendChild(card);
+    });
+    listsEl.appendChild(listEl);
+  });
+
+  if(!any){
+    listsEl.innerHTML = '<div class="empty">スポットがありません</div>';
+  }
+
+  updateFavBadge();
+}
+
+document.querySelectorAll('.mode-btn').forEach(b=>{
+  b.onclick = ()=>{ currentMode = b.dataset.mode; render(); renderFavSheet(); };
+});
+
+/* ---- favorites bottom sheet ---- */
+function getFavSpots(){
+  // keep SPOTS display order for a sensible route sequence
+  return SPOTS.filter(s=>favorites.includes(s.id));
+}
+
+function multiRouteUrl(spots, mode){
+  if(spots.length===0) return null;
+  const dest = spots[spots.length-1];
+  const waypoints = spots.slice(0,-1).map(s=>`${s.lat},${s.lng}`).join('|');
+  let url = `https://www.google.com/maps/dir/?api=1&destination=${dest.lat},${dest.lng}&travelmode=${mode}`;
+  if(waypoints) url += `&waypoints=${waypoints}`;
+  return url;
+}
+
+function updateFavBadge(){
+  const badge = document.getElementById('favBadge');
+  const n = favorites.length;
+  badge.textContent = n;
+  badge.style.display = n>0 ? 'inline-block' : 'none';
+}
+
+function renderFavSheet(){
+  updateFavBadge();
+  document.getElementById('sheetModeLabel').textContent =
+    `現在のモード：${currentMode==='driving' ? '車で行く' : '電車で行く'}`;
+
+  const favSpots = getFavSpots();
+  const body = document.getElementById('sheetBody');
+  const actions = document.getElementById('sheetActions');
+  body.innerHTML = '';
+
+  if(favSpots.length===0){
+    body.innerHTML = '<div class="sheet-empty">ハートを押すとここにスポットが並びます</div>';
+    actions.innerHTML = '';
+    return;
+  }
+
+  favSpots.forEach(spot=>{
+    const item = document.createElement('div');
+    item.className = 'sheet-item';
+    item.innerHTML = `
+      <div class="info">
+        <div class="area-tag">${spot.area}</div>
+        <div class="nm">${spot.name}</div>
+      </div>
+      <button class="remove" aria-label="削除">✕</button>
+    `;
+    item.querySelector('.remove').onclick = ()=>{
+      toggleFav(spot.id);
+      renderFavSheet();
+    };
+    body.appendChild(item);
+  });
+
+  if(currentMode==='driving'){
+    const url = multiRouteUrl(favSpots, 'driving');
+    actions.innerHTML = `
+      <a class="go-btn" href="${url}" target="_blank" rel="noopener">この順番でまとめて車ルートを開く</a>
+      <p class="hint">現在地からスタートし、順番に経由地を回るルートです。Googleマップ側で順番の入れ替えもできます。</p>
+    `;
+  }else{
+    // transit mode: Google Maps directions doesn't support multi-stop transit routing,
+    // so offer one link per spot instead.
+    const linksHtml = favSpots.map(spot=>
+      `<a href="${routeUrl(spot, 'transit')}" target="_blank" rel="noopener">${spot.name} へ電車ルート</a>`
+    ).join('');
+    actions.innerHTML = `
+      <div class="transit-links">${linksHtml}</div>
+      <p class="hint">電車ルートは経由地をまとめて指定できないため、1件ずつ開くリンクにしています。</p>
+    `;
+  }
+}
+
+function openFavSheet(){
+  renderFavSheet();
+  document.getElementById('sheetOverlay').classList.add('open');
+  document.getElementById('favSheet').classList.add('open');
+}
+function closeFavSheet(){
+  document.getElementById('sheetOverlay').classList.remove('open');
+  document.getElementById('favSheet').classList.remove('open');
+}
+
+document.getElementById('navFavBtn').onclick = openFavSheet;
+document.getElementById('sheetOverlay').onclick = closeFavSheet;
+
+loadFavorites();
+</script>
+
+</body>
+</html>
