@@ -146,6 +146,32 @@
     border-radius:2px;
     padding:12px 14px 12px 14px;
   }
+  .card-inner{
+    display:flex;
+    gap:12px;
+    align-items:flex-start;
+  }
+  .card-photo{
+    flex:0 0 80px;
+    width:80px;
+    height:80px;
+    border-radius:4px;
+    background:var(--paper-dark);
+    border:1px solid var(--line);
+    overflow:hidden;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+  }
+  .card-photo svg{
+    width:28px;
+    height:28px;
+    opacity:0.35;
+  }
+  .card-content{
+    flex:1;
+    min-width:0;
+  }
   .card-top{
     display:flex;
     justify-content:space-between;
@@ -556,12 +582,6 @@ const SPOTS = [
   {id:"waka-rico-guesthouse", area:"和歌山", cat:"ゲストハウス", name:"ゲストハウス RICO",
    lat:34.2322031, lng:135.1795692, placeId:"ChIJBeK4DN2yAGARrbxlqBLGq9M",
    note:"落ち着いた雰囲気でくつろげる宿。"},
-  {id:"waka-popolo", area:"和歌山", cat:"野菜カフェ・レストラン", name:"石窯ポポロ（にこにこ農園）",
-   lat:34.2336122, lng:135.1748595, placeId:null,
-   note:"ぶらくり丁商店街のポポロビル1F。「にこにこ農園」運営で有機野菜の石窯ピザ・プレートランチ。建物は2階建て、2階の利用状況は現地で要確認。"},
-  {id:"waka-flanders", area:"和歌山", cat:"アイス・ジェラート", name:"FLANDERS（フランダース）",
-   lat:34.233711, lng:135.172372, placeId:"ChIJR2y25euyAGAR6AGViVGKxtc",
-   note:"石窯ポポロのすぐ近く。手作りチョコレート＆ジェラートの人気店。"},
   {id:"waka-mizube-bar", area:"和歌山", cat:"バー", name:"水辺のバー（京橋・市堀川沿い）",
    lat:34.234, lng:135.180, placeId:null,
    note:"和歌山市駅近く、市堀川の京橋のたもとに隠れ家的バーがあるとの情報あり。店名は現地で要確認。"},
@@ -653,18 +673,28 @@ function render(){
       card.className = 'card';
       card.style.setProperty('--area-color', AREA_COLORS[area]);
       card.innerHTML = `
-        <div class="card-top">
-          <div class="card-title-wrap">
-            <span class="cat">${spot.cat}</span>
-            <div class="name">${spot.name}</div>
-            <div class="note">${spot.note}</div>
+        <div class="card-inner">
+          <div class="card-photo">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/>
+              <circle cx="12" cy="13" r="3"/>
+            </svg>
           </div>
-          <button class="fav-btn ${isFav?'active':''}" aria-label="お気に入り">${isFav?'♥':'♡'}</button>
-        </div>
-        <div class="cat-icons">${renderCategoryIcons()}</div>
-        <div class="actions">
-          <a href="${mapsUrl(spot)}" target="_blank" rel="noopener">地図で見る</a>
-          <a class="route" href="${routeUrl(spot, currentMode)}" target="_blank" rel="noopener">${currentMode==='driving'?'車でルート':'電車でルート'}</a>
+          <div class="card-content">
+            <div class="card-top">
+              <div class="card-title-wrap">
+                <span class="cat">${spot.cat}</span>
+                <div class="name">${spot.name}</div>
+                <div class="note">${spot.note}</div>
+              </div>
+              <button class="fav-btn ${isFav?'active':''}" aria-label="お気に入り">${isFav?'♥':'♡'}</button>
+            </div>
+            <div class="cat-icons">${renderCategoryIcons()}</div>
+            <div class="actions">
+              <a href="${mapsUrl(spot)}" target="_blank" rel="noopener">地図で見る</a>
+              <a class="route" href="${routeUrl(spot, currentMode)}" target="_blank" rel="noopener">${currentMode==='driving'?'車でルート':'電車でルート'}</a>
+            </div>
+          </div>
         </div>
       `;
       card.querySelector('.fav-btn').onclick = ()=>toggleFav(spot.id);
