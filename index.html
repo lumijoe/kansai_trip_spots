@@ -192,6 +192,26 @@
   }
   .fav-btn.active{ color:var(--hanko); }
 
+  .cat-icons{
+    display:flex;
+    gap:6px;
+    margin-top:8px;
+    flex-wrap:wrap;
+  }
+  .cat-icons .icon-badge{
+    width:28px;
+    height:28px;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    flex:0 0 auto;
+  }
+  .cat-icons .icon-badge svg{
+    width:16px;
+    height:16px;
+  }
+
   .actions{
     display:flex;
     gap:8px;
@@ -446,6 +466,29 @@ const AREA_COLORS = {
   "和歌山": "#5B6E3E"
 };
 
+const CATEGORY_ICONS = [
+  { name:"food", bg:"#F5C4B3", fg:"#4A1B0C",
+    path:'<path d="M19 3v12h-5c-.023 -3.681 .184 -7.406 5 -12m0 12v6h-1v-3m-10 -14v17m-3 -17v3a3 3 0 1 0 6 0v-3"/>' },
+  { name:"souvenir", bg:"#F4C0D1", fg:"#4B1528",
+    path:'<path d="M3 9a1 1 0 0 1 1 -1h16a1 1 0 0 1 1 1v2a1 1 0 0 1 -1 1h-16a1 1 0 0 1 -1 -1l0 -2"/><path d="M12 8l0 13"/><path d="M19 12v7a2 2 0 0 1 -2 2h-10a2 2 0 0 1 -2 -2v-7"/><path d="M7.5 8a2.5 2.5 0 0 1 0 -5a4.8 8 0 0 1 4.5 5a4.8 8 0 0 1 4.5 -5a2.5 2.5 0 0 1 0 5"/>' },
+  { name:"lodging", bg:"#CECBF6", fg:"#26215C",
+    path:'<path d="M5 9a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"/><path d="M22 17v-3h-20"/><path d="M2 8v9"/><path d="M12 14h10v-2a3 3 0 0 0 -3 -3h-7v5"/>' },
+  { name:"info", bg:"#B5D4F4", fg:"#042C53",
+    path:'<path d="M3 12a9 9 0 1 0 18 0a9 9 0 0 0 -18 0"/><path d="M12 9h.01"/><path d="M11 12h1v4h1"/>' },
+  { name:"roadstation", bg:"#C0DD97", fg:"#173404",
+    path:'<path d="M3 21l18 0"/><path d="M3 7v1a3 3 0 0 0 6 0v-1m0 1a3 3 0 0 0 6 0v-1m0 1a3 3 0 0 0 6 0v-1h-18l2 -4h14l2 4"/><path d="M5 21l0 -10.15"/><path d="M19 21l0 -10.15"/><path d="M9 21v-4a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v4"/>' },
+  { name:"cycle", bg:"#9FE1CB", fg:"#04342C",
+    path:'<path d="M2 18a3 3 0 1 0 6 0a3 3 0 0 0 -6 0"/><path d="M16 18a3 3 0 1 0 6 0a3 3 0 0 0 -6 0"/><path d="M12 19v-4l-3 -3l5 -4l2 3h3"/><path d="M13.007 5a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"/>' },
+];
+
+function renderCategoryIcons(){
+  return CATEGORY_ICONS.map(ic=>
+    `<span class="icon-badge" style="background:${ic.bg}" title="${ic.name}">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="${ic.fg}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${ic.path}</svg>
+    </span>`
+  ).join('');
+}
+
 const SPOTS = [
   // なんば
   {id:"namba-kirin", area:"なんば", cat:"ビアレストラン", name:"キリンシティプラス なんばCITY店",
@@ -609,6 +652,7 @@ function render(){
           </div>
           <button class="fav-btn ${isFav?'active':''}" aria-label="お気に入り">${isFav?'♥':'♡'}</button>
         </div>
+        <div class="cat-icons">${renderCategoryIcons()}</div>
         <div class="actions">
           <a href="${mapsUrl(spot)}" target="_blank" rel="noopener">地図で見る</a>
           <a class="route" href="${routeUrl(spot, currentMode)}" target="_blank" rel="noopener">${currentMode==='driving'?'車でルート':'電車でルート'}</a>
