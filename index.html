@@ -65,6 +65,13 @@
         padding: 2px 8px;
         margin-bottom: 0;
       }
+      .header-controls {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        gap: 8px;
+        flex: 0 0 auto;
+      }
       .view-toggle {
         display: flex;
         border: 1.5px solid var(--ink);
@@ -85,6 +92,31 @@
       .view-toggle-btn.active {
         background: var(--ink);
         color: var(--paper);
+      }
+      .theme-switch {
+        display: flex;
+        border: 1.5px solid var(--ink);
+        border-radius: 999px;
+        overflow: hidden;
+        flex: 0 0 auto;
+      }
+      .theme-btn {
+        background: var(--card);
+        border: none;
+        padding: 6px 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+      }
+      .theme-btn.active {
+        background: var(--ink);
+      }
+      .swatch-dot {
+        width: 14px;
+        height: 14px;
+        border-radius: 50%;
+        display: block;
       }
       h1 {
         font-family: inherit;
@@ -109,15 +141,22 @@
       }
       .mode-btn {
         flex: 1;
+        min-width: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 3px;
         text-align: center;
-        padding: 9px 0;
+        padding: 8px 2px;
         border: 1.5px solid var(--ink);
         border-radius: 8px;
         background: var(--card);
         color: var(--ink);
-        font-size: 13.5px;
+        font-size: 12.5px;
         font-weight: 600;
         cursor: pointer;
+        white-space: nowrap;
         transition:
           background 0.15s,
           color 0.15s;
@@ -125,6 +164,10 @@
       .mode-btn.active {
         background: var(--ink);
         color: var(--paper);
+      }
+      .mode-icon {
+        width: 22px;
+        height: 22px;
       }
 
       .tabs {
@@ -285,6 +328,9 @@
         gap: 5px;
         font-size: 10.5px;
         color: var(--ink-soft);
+        background: var(--card);
+        border-radius: 999px;
+        padding: 4px 10px 4px 4px;
       }
       .icon-legend .legend-item .icon-badge {
         width: 22px;
@@ -835,107 +881,108 @@
       .icon-badge svg {
         filter: var(--icon-glyph-filter);
       }
-
-      /* テーマ切り替えトグル */
-      .theme-switch {
-        display: inline-flex;
-        border: 1.5px solid var(--ink);
-        border-radius: 999px;
-        overflow: hidden;
-        margin-top: 10px;
-      }
-      .theme-btn {
-        background: var(--card);
-        border: none;
-        padding: 5px 12px;
-        font-size: 11.5px;
-        font-family: inherit;
-        color: var(--ink);
-        cursor: pointer;
-      }
-      .theme-btn + .theme-btn {
-        border-left: 1px solid var(--line);
-      }
-      .theme-btn.active {
-        background: var(--ink);
-        color: var(--paper);
-      }
     </style>
   </head>
   <body>
     <header>
       <div class="header-top">
         <div class="stamp">TRIP NOTE ・ 大阪 → 和歌山 → 淡路島</div>
-        <div class="view-toggle" id="viewToggle">
-          <button
-            class="view-toggle-btn active"
-            data-view="list"
-            aria-label="リスト表示"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 24 24"
-              width="15"
-              height="15"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
+        <div class="header-controls">
+          <div class="view-toggle" id="viewToggle">
+            <button
+              class="view-toggle-btn active"
+              data-view="list"
+              aria-label="リスト表示"
             >
-              <path d="M9 6l11 0" />
-              <path d="M9 12l11 0" />
-              <path d="M9 18l11 0" />
-              <path d="M4 6l0 .01" />
-              <path d="M4 12l0 .01" />
-              <path d="M4 18l0 .01" />
-            </svg>
-          </button>
-          <button
-            class="view-toggle-btn"
-            data-view="card"
-            aria-label="カード表示"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 24 24"
-              width="15"
-              height="15"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                width="15"
+                height="15"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="M9 6l11 0" />
+                <path d="M9 12l11 0" />
+                <path d="M9 18l11 0" />
+                <path d="M4 6l0 .01" />
+                <path d="M4 12l0 .01" />
+                <path d="M4 18l0 .01" />
+              </svg>
+            </button>
+            <button
+              class="view-toggle-btn"
+              data-view="card"
+              aria-label="カード表示"
             >
-              <rect x="4" y="4" width="7" height="7" rx="1" />
-              <rect x="13" y="4" width="7" height="7" rx="1" />
-              <rect x="4" y="13" width="7" height="7" rx="1" />
-              <rect x="13" y="13" width="7" height="7" rx="1" />
-            </svg>
-          </button>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                width="15"
+                height="15"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <rect x="4" y="4" width="7" height="7" rx="1" />
+                <rect x="13" y="4" width="7" height="7" rx="1" />
+                <rect x="4" y="13" width="7" height="7" rx="1" />
+                <rect x="13" y="13" width="7" height="7" rx="1" />
+              </svg>
+            </button>
+          </div>
+          <div class="theme-switch" role="group" aria-label="テーマ切り替え">
+            <button
+              class="theme-btn active"
+              data-theme-btn="default"
+              aria-label="デフォルト配色"
+              title="デフォルト"
+            >
+              <span class="swatch-dot" style="background: #1f8f9e"></span>
+            </button>
+            <button
+              class="theme-btn"
+              data-theme-btn="pastel-pop"
+              aria-label="パステルポップ配色"
+              title="パステルポップ"
+            >
+              <span class="swatch-dot" style="background: #7bbfcb"></span>
+            </button>
+            <button
+              class="theme-btn"
+              data-theme-btn="active-gradient"
+              style="display: none"
+            >
+              アクティブグラデーション
+            </button>
+          </div>
         </div>
       </div>
       <h1>おでかけスポットまとめ</h1>
       <p class="sub">
         気になる場所はハートで「お気に入り」。移動手段を選んでルートを開けます。
       </p>
-      <div class="theme-switch" role="group" aria-label="テーマ切り替え">
-        <button class="theme-btn active" data-theme-btn="default">
-          デフォルト
-        </button>
-        <button class="theme-btn" data-theme-btn="pastel-pop">
-          パステルポップ
-        </button>
-        <button class="theme-btn" data-theme-btn="active-gradient">
-          アクティブグラデーション
-        </button>
-      </div>
     </header>
 
     <div class="controls">
       <div class="mode-row">
-        <div class="mode-btn active" data-mode="driving">🚗 車で行く</div>
-        <div class="mode-btn" data-mode="transit">🚃 電車で行く</div>
+        <div class="mode-btn active" data-mode="driving">
+          <svg class="mode-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="10" width="20" height="6" rx="2"/><path d="M5 10l2 -4h8l3 4"/><circle cx="7" cy="17" r="2"/><circle cx="17" cy="17" r="2"/></svg>
+          車で
+        </div>
+        <div class="mode-btn" data-mode="transit">
+          <svg class="mode-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 4l1.5 -3h3l1.5 3"/><rect x="4" y="4" width="16" height="11" rx="3"/><path d="M4 10h16"/><path d="M9 4v6"/><path d="M15 4v6"/><circle cx="8" cy="18" r="1.5"/><circle cx="16" cy="18" r="1.5"/><path d="M6 15l-1.5 3"/><path d="M18 15l1.5 3"/></svg>
+          電車で
+        </div>
+        <div class="mode-btn" data-mode="ferry">
+          <svg class="mode-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 20a2.4 2.4 0 0 0 2 1a2.4 2.4 0 0 0 2 -1a2.4 2.4 0 0 1 2 -1a2.4 2.4 0 0 1 2 1a2.4 2.4 0 0 0 2 1a2.4 2.4 0 0 0 2 -1a2.4 2.4 0 0 1 2 -1a2.4 2.4 0 0 1 2 1a2.4 2.4 0 0 0 2 1a2.4 2.4 0 0 0 2 -1"/><path d="M4 18l-1 -5h18l-2 4"/><path d="M5 13v-6h8l4 6"/><path d="M7 7v-4h-1"/></svg>
+          船で
+        </div>
       </div>
 
       <div class="mood-section" id="moodSection" style="display: none">
@@ -1665,7 +1712,8 @@
         return `https://www.google.com/maps/search/?api=1&query=${q}`;
       }
       function routeUrl(spot, mode) {
-        return `https://www.google.com/maps/dir/?api=1&destination=${spot.lat},${spot.lng}&travelmode=${mode}`;
+        const travelmode = mode === "ferry" ? "transit" : mode;
+        return `https://www.google.com/maps/dir/?api=1&destination=${spot.lat},${spot.lng}&travelmode=${travelmode}`;
       }
 
       async function loadFavorites() {
@@ -1803,7 +1851,7 @@
             <div class="actions">
               ${mapLinkHtml}
               ${spot.website ? `<a href="${spot.website}" target="_blank" rel="noopener">公式サイト</a>` : ""}
-              <a class="route" href="${routeUrl(spot, currentMode)}" target="_blank" rel="noopener">${currentMode === "driving" ? "車でルート" : "電車でルート"}</a>
+              <a class="route" href="${routeUrl(spot, currentMode)}" target="_blank" rel="noopener">${currentMode === "driving" ? "車でルート" : currentMode === "transit" ? "電車でルート" : "船でルート"}</a>
             </div>`;
 
             if (viewMode === "card") {
@@ -1902,7 +1950,7 @@
       function renderFavSheet() {
         updateFavBadge();
         document.getElementById("sheetModeLabel").textContent =
-          `現在のモード：${currentMode === "driving" ? "車で行く" : "電車で行く"}`;
+          `現在のモード：${currentMode === "driving" ? "車で行く" : currentMode === "transit" ? "電車で行く" : "船で行く"}`;
 
         const favSpots = getFavSpots();
         const body = document.getElementById("sheetBody");
@@ -1940,17 +1988,18 @@
       <p class="hint">現在地からスタートし、順番に経由地を回るルートです。Googleマップ側で順番の入れ替えもできます。</p>
     `;
         } else {
-          // transit mode: Google Maps directions doesn't support multi-stop transit routing,
-          // so offer one link per spot instead.
+          // transit/ferry mode: Google Maps directions doesn't support multi-stop
+          // transit routing, so offer one link per spot instead.
+          const label = currentMode === "ferry" ? "船" : "電車";
           const linksHtml = favSpots
             .map(
               (spot) =>
-                `<a href="${routeUrl(spot, "transit")}" target="_blank" rel="noopener">${spot.name} へ電車ルート</a>`,
+                `<a href="${routeUrl(spot, currentMode)}" target="_blank" rel="noopener">${spot.name} へ${label}ルート</a>`,
             )
             .join("");
           actions.innerHTML = `
       <div class="transit-links">${linksHtml}</div>
-      <p class="hint">電車ルートは経由地をまとめて指定できないため、1件ずつ開くリンクにしています。</p>
+      <p class="hint">${label}ルートは経由地をまとめて指定できないため、1件ずつ開くリンクにしています。</p>
     `;
         }
       }
