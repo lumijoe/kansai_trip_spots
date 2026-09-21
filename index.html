@@ -6,23 +6,23 @@
 <title>大阪〜和歌山〜淡路島 おでかけノート</title>
 <style>
   :root{
-    --paper:#EFEAE0;
-    --paper-dark:#E3DCCB;
+    --paper:#FFFFFF;
+    --paper-dark:#EEF4F5;
     --ink:#1F3A5F;
     --ink-soft:#4A5D74;
     --hanko:#B23A2E;
     --moss:#4C7A6B;
-    --line:#C9BFA8;
-    --card:#FBF9F3;
+    --line:#DCE6E8;
+    --card:#FFFFFF;
   }
   *{box-sizing:border-box;}
   body{
     margin:0;
     background:var(--paper);
     background-image:
-      radial-gradient(circle at 15% 8%, rgba(31,58,95,0.05) 0, transparent 40%),
-      radial-gradient(circle at 90% 90%, rgba(178,58,46,0.05) 0, transparent 40%);
-    font-family: "Hiragino Sans", "Yu Gothic", "Noto Sans JP", sans-serif;
+      radial-gradient(circle at 15% 8%, rgba(47,158,184,0.06) 0, transparent 40%),
+      radial-gradient(circle at 90% 90%, rgba(31,58,95,0.05) 0, transparent 40%);
+    font-family: -apple-system, "Helvetica Neue", Arial, "Hiragino Sans", "Yu Gothic", "Noto Sans JP", sans-serif;
     color:var(--ink);
     padding:0 0 84px;
   }
@@ -45,7 +45,7 @@
     margin-bottom:8px;
   }
   h1{
-    font-family: "Hiragino Mincho ProN", "Yu Mincho", serif;
+    font-family: inherit;
     font-size:22px;
     margin:0 0 4px;
     line-height:1.4;
@@ -85,12 +85,10 @@
 
   .tabs{
     display:flex;
+    flex-wrap:wrap;
     gap:6px;
-    overflow-x:auto;
     padding-bottom:10px;
-    scrollbar-width:none;
   }
-  .tabs::-webkit-scrollbar{display:none;}
   .tab{
     flex:0 0 auto;
     padding:6px 12px;
@@ -109,6 +107,34 @@
     font-weight:600;
   }
 
+  .icon-legend{
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px 14px;
+    padding:10px 2px 4px;
+    border-top:1px dashed var(--line);
+    margin-top:10px;
+  }
+  .icon-legend .legend-item{
+    display:flex;
+    align-items:center;
+    gap:5px;
+    font-size:10.5px;
+    color:var(--ink-soft);
+  }
+  .icon-legend .legend-item .icon-badge{
+    width:22px;
+    height:22px;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+  }
+  .icon-legend .legend-item .icon-badge svg{
+    width:13px;
+    height:13px;
+  }
+
   .area-heading{
     margin:22px 18px 8px;
     display:flex;
@@ -121,7 +147,7 @@
     flex:0 0 auto;
   }
   .area-heading h2{
-    font-family:"Hiragino Mincho ProN","Yu Mincho",serif;
+    font-family:inherit;
     font-size:16px;
     margin:0;
     font-weight:600;
@@ -163,6 +189,12 @@
     align-items:center;
     justify-content:center;
   }
+  .card-photo img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    display:block;
+  }
   .card-photo svg{
     width:28px;
     height:28px;
@@ -187,6 +219,26 @@
     border-radius:999px;
     padding:1px 8px;
     margin-bottom:5px;
+  }
+  .closing-tag{
+    display:inline-block;
+    font-size:10.5px;
+    font-weight:700;
+    color:#fff;
+    background:var(--hanko);
+    border-radius:999px;
+    padding:1px 8px;
+    margin:0 0 5px 6px;
+  }
+  .event-tag{
+    display:inline-block;
+    font-size:10.5px;
+    font-weight:700;
+    color:#fff;
+    background:#BE5084;
+    border-radius:999px;
+    padding:1px 8px;
+    margin:0 0 5px 6px;
   }
   .name{
     font-size:15px;
@@ -349,7 +401,7 @@
     border-bottom:1px solid var(--line);
   }
   .sheet-head h3{
-    font-family:"Hiragino Mincho ProN","Yu Mincho",serif;
+    font-family:inherit;
     font-size:16px;
     margin:0 0 4px;
   }
@@ -454,13 +506,14 @@
     <div class="mode-btn" data-mode="transit">🚃 電車で行く</div>
   </div>
   <div class="tabs" id="tabs"></div>
+  <div class="icon-legend" id="iconLegend"></div>
 </div>
 
 <div id="lists"></div>
 
 <div class="footer-note">
   ※ ルートボタンは現在地からの Google マップのルートを開きます（出発地は開いた画面で変更できます）。<br>
-  ※ 岬町・深日港からは高速船で淡路島(洲本方面)へ渡れます。深日港の観光案内所でチケット・時刻を確認できます。<br>
+  ※ 岬町・阪南市からは高速船で淡路島(洲本方面)へ渡れます。深日港の観光案内所でチケット・時刻を確認できます。<br>
   ※ 位置情報が確定できなかった一部スポット（ぶらくり丁のカフェ・ジェラート店・水辺のバー）はおおよその場所です。現地で商店街を歩いて探すのがおすすめです。
 </div>
 
@@ -487,30 +540,64 @@
 const AREA_COLORS = {
   "なんば": "#1F3A5F",
   "天王寺": "#7A5C3E",
-  "岬町・深日港": "#4C7A6B",
+  "岬町・阪南市": "#4C7A6B",
+  "泉佐野・りんくう": "#C77C2E",
   "淡路島": "#B23A2E",
   "和歌山": "#5B6E3E"
 };
 
 const CATEGORY_ICONS = [
-  { name:"food", bg:"#F5C4B3", fg:"#4A1B0C",
+  { name:"food", label:"食事", bg:"#EEA539", fg:"#FFFFFF",
     path:'<path d="M19 3v12h-5c-.023 -3.681 .184 -7.406 5 -12m0 12v6h-1v-3m-10 -14v17m-3 -17v3a3 3 0 1 0 6 0v-3"/>' },
-  { name:"souvenir", bg:"#F4C0D1", fg:"#4B1528",
+  { name:"souvenir", label:"お土産", bg:"#AB6630", fg:"#FFFFFF",
     path:'<path d="M3 9a1 1 0 0 1 1 -1h16a1 1 0 0 1 1 1v2a1 1 0 0 1 -1 1h-16a1 1 0 0 1 -1 -1l0 -2"/><path d="M12 8l0 13"/><path d="M19 12v7a2 2 0 0 1 -2 2h-10a2 2 0 0 1 -2 -2v-7"/><path d="M7.5 8a2.5 2.5 0 0 1 0 -5a4.8 8 0 0 1 4.5 5a4.8 8 0 0 1 4.5 -5a2.5 2.5 0 0 1 0 5"/>' },
-  { name:"lodging", bg:"#CECBF6", fg:"#26215C",
+  { name:"lodging", label:"宿泊", bg:"#7B6EAD", fg:"#FFFFFF",
     path:'<path d="M5 9a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"/><path d="M22 17v-3h-20"/><path d="M2 8v9"/><path d="M12 14h10v-2a3 3 0 0 0 -3 -3h-7v5"/>' },
-  { name:"info", bg:"#B5D4F4", fg:"#042C53",
-    path:'<path d="M3 12a9 9 0 1 0 18 0a9 9 0 0 0 -18 0"/><path d="M12 9h.01"/><path d="M11 12h1v4h1"/>' },
-  { name:"roadstation", bg:"#C0DD97", fg:"#173404",
-    path:'<path d="M3 21l18 0"/><path d="M3 7v1a3 3 0 0 0 6 0v-1m0 1a3 3 0 0 0 6 0v-1m0 1a3 3 0 0 0 6 0v-1h-18l2 -4h14l2 4"/><path d="M5 21l0 -10.15"/><path d="M19 21l0 -10.15"/><path d="M9 21v-4a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v4"/>' },
-  { name:"cycle", bg:"#9FE1CB", fg:"#04342C",
+  { name:"info", label:"インフォ", bg:"#87754E", fg:"#FFFFFF",
+    path:'<path d="M12 5.5v8" stroke-width="2.8"/><path d="M12 17v.01" stroke-width="3.8"/>' },
+  { name:"roadstation", label:"道の駅", bg:"#2B5F8C", fg:"#FFFFFF",
+    path:'<circle cx="6" cy="8" r="4"/><path d="M6 12v8"/><path d="M4 20h4"/><path d="M12 15l5 -4l5 4"/><path d="M13 15v6h8v-6"/><path d="M16 21v-4h2v4"/>' },
+  { name:"cycle", label:"レンタサイクル", bg:"#478358", fg:"#FFFFFF",
     path:'<path d="M2 18a3 3 0 1 0 6 0a3 3 0 0 0 -6 0"/><path d="M16 18a3 3 0 1 0 6 0a3 3 0 0 0 -6 0"/><path d="M12 19v-4l-3 -3l5 -4l2 3h3"/><path d="M13.007 5a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"/>' },
+  { name:"boat", label:"船", bg:"#2142F3", fg:"#FFFFFF",
+    path:'<path d="M2 21c1 1 3 1 4 0c1 -1 3 -1 4 0c1 1 3 1 4 0c1 -1 3 -1 4 0c1 1 3 1 4 0"/><path d="M4 18l1.5 -5h13l1.5 5z"/><path d="M9 13v-3h6v3"/><path d="M12 10v-3"/><path d="M12 7l2.5 1.2l-2.5 1.3"/>' },
+  { name:"shopping", label:"ショッピング", bg:"#BD527A", fg:"#FFFFFF",
+    path:'<circle cx="6" cy="19" r="2"/><circle cx="17" cy="19" r="2"/><path d="M17 17h-11v-14h-2"/><path d="M6 5l14 1l-1 7h-13"/>' },
+  { name:"beach", label:"ビーチ", bg:"#12A6E3", fg:"#FFFFFF",
+    path:'<path d="M3 20h18"/><path d="M3 19c2 -7 5 -11 10 -11c3 0 5 2 4 4.5c-.9 2 -3.2 2.4 -4.8 1"/><path d="M15.5 6l1.5 -1.5"/><path d="M18.3 8.2l1.8 -1"/><path d="M19.8 11.5l2 -.3"/>' },
+  { name:"snack", label:"軽食", bg:"#8B5A2B", fg:"#FFFFFF",
+    path:'<path d="M3 7h13v7a4 4 0 0 1 -4 4h-5a4 4 0 0 1 -4 -4v-7"/><path d="M16 8h2a2 2 0 0 1 2 2a2 2 0 0 1 -2 2h-2"/><path d="M6 2c0 1 -1 1 -1 2"/><path d="M10 2c0 1 -1 1 -1 2"/>' },
+  { name:"book", label:"本", bg:"#8B4A3D", fg:"#FFFFFF",
+    path:'<path d="M3 19a9 9 0 0 1 9 0a9 9 0 0 1 9 0"/><path d="M3 6a9 9 0 0 1 9 0a9 9 0 0 1 9 0"/><path d="M3 6l0 13"/><path d="M12 6l0 13"/><path d="M21 6l0 13"/>' },
+  { name:"plane", label:"飛行機", bg:"#5C6670", fg:"#FFFFFF",
+    path:'<path d="M16 10h4a2 2 0 0 1 0 4h-4l-4 7h-3l2 -7h-4l-2 2h-3l2 -4l-2 -4h3l2 2h4l-2 -7h3z"/>' },
+  { name:"train", label:"電車", bg:"#2F6E6E", fg:"#FFFFFF",
+    path:'<path d="M9 6l1.5 -4h3l1.5 4"/><path d="M5 17v-6a5 5 0 0 1 5 -5h4a5 5 0 0 1 5 5v6z"/><path d="M9 9h6"/><path d="M5 17h14"/><circle cx="8.5" cy="19.3" r="1.3"/><circle cx="15.5" cy="19.3" r="1.3"/><path d="M6 17l-1.5 3"/><path d="M18 17l1.5 3"/>' },
+  { name:"chiikawa", label:"ちいかわ", bg:"#BE5084", fg:"#FFFFFF",
+    path:'<ellipse cx="8.7" cy="5" rx="1.6" ry="4" transform="rotate(-15 8.7 5)"/><ellipse cx="15.3" cy="5" rx="1.6" ry="4" transform="rotate(15 15.3 5)"/><circle cx="12" cy="14" r="5.5"/>' },
+  { name:"footbath", label:"足湯", bg:"#B1632D", fg:"#FFFFFF",
+    path:'<path d="M3 18c0 2 2 3 4 3h10c2 0 4 -1 4 -3"/><path d="M8 14c-1 -1.3 1 -2.2 0 -3.5c-1 -1.3 1 -2.2 0 -3.5"/><path d="M12 14c-1 -1.3 1 -2.2 0 -3.5c-1 -1.3 1 -2.2 0 -3.5"/><path d="M16 14c-1 -1.3 1 -2.2 0 -3.5c-1 -1.3 1 -2.2 0 -3.5"/>' },
+  { name:"nightview", label:"夜景", bg:"#2B2E6E", fg:"#FFFFFF",
+    path:'<path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z"/><path d="M18 6l.5 1.5l1.5 .5l-1.5 .5l-.5 1.5l-.5 -1.5l-1.5 -.5l1.5 -.5z"/><path d="M20.5 13l.3 1l1 .3l-1 .3l-.3 1l-.3 -1l-1 -.3l1 -.3z"/>' },
 ];
 
-function renderCategoryIcons(){
-  return CATEGORY_ICONS.map(ic=>
+function renderCategoryIcons(iconNames){
+  if(!iconNames || iconNames.length===0) return '';
+  return CATEGORY_ICONS.filter(ic=>iconNames.includes(ic.name)).map(ic=>
     `<span class="icon-badge" style="background:${ic.bg}" title="${ic.name}">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="${ic.fg}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${ic.path}</svg>
+    </span>`
+  ).join('');
+}
+
+function renderIconLegend(){
+  const el = document.getElementById('iconLegend');
+  el.innerHTML = CATEGORY_ICONS.map(ic=>
+    `<span class="legend-item">
+      <span class="icon-badge" style="background:${ic.bg}">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="${ic.fg}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${ic.path}</svg>
+      </span>
+      ${ic.label}
     </span>`
   ).join('');
 }
@@ -519,89 +606,177 @@ const SPOTS = [
   // なんば
   {id:"namba-kirin", area:"なんば", cat:"ビアレストラン", name:"キリンシティプラス なんばCITY店",
    lat:34.6618492, lng:135.5031599, placeId:"ChIJQSRsfmznAGARuJF7O84MUrk",
-   note:"なんばCITY南館1F。ビールと洋食を気軽に。"},
+   note:"ビールやカクテル、ノンアルもドリンクが豊富で料理が美味しい。", icons:["food"],
+   photo:"https://images.unsplash.com/photo-1587041068746-2bb5da1d2f11?fm=jpg&q=60&w=800&auto=format&fit=crop"},
   {id:"namba-king", area:"なんば", cat:"焼肉", name:"焼肉きんぐ namBaHIPS店",
    lat:34.6675993, lng:135.5006679, placeId:"ChIJTcTV-avnAGAR1jT1JrASGoo",
-   note:"食べ放題の焼肉。namBa HIPS 7F。"},
+   note:"ビルからは想像できないほど綺麗で和モダンな店内。食べ放題の焼肉。", icons:["food"],
+   photo:"https://images.unsplash.com/photo-1719464457455-a5835fdbd174?fm=jpg&q=60&w=800&auto=format&fit=crop"},
 
   // 天王寺
   {id:"tennoji-daimatsu", area:"天王寺", cat:"焼肉ホルモン", name:"大衆焼き肉ホルモン 大松 天王寺MIO店",
    lat:34.6469265, lng:135.5136926, placeId:"ChIJNe8v5prdAGAR2bWwZ_A9HNk",
-   note:"小皿でいろんな部位を楽しめる大衆焼肉。"},
+   note:"小皿でいろんな部位を楽しめる大衆焼肉。", icons:["food"],
+   photo:"https://images.unsplash.com/photo-1776855206994-01f38d5da8c9?fm=jpg&q=60&w=800&auto=format&fit=crop"},
   {id:"tennoji-wakabayashi", area:"天王寺", cat:"中華酒場", name:"大衆中華酒場若林 天王寺MIO店",
    lat:34.6475438, lng:135.5142123, placeId:"ChIJbUilhHfdAGARDiNt1DBdC_Q",
-   note:"天王寺駅から徒歩すぐの中華酒場。"},
-
-  // 岬町・深日港
-  {id:"misaki-michinoeki", area:"岬町・深日港", cat:"道の駅", name:"道の駅みさき",
+   note:"天王寺駅から徒歩すぐの中華酒場。", icons:["food"],
+   photo:"https://images.unsplash.com/photo-1604632911237-f2521c1f5a06?fm=jpg&q=60&w=800&auto=format&fit=crop"},
+  // 岬町・阪南市
+  {id:"misaki-michinoeki", area:"岬町・阪南市", cat:"道の駅", name:"道の駅みさき",
    lat:34.3257529, lng:135.1738331, placeId:"ChIJM2eh_U6wAGAR1B9M9mp44u4",
-   note:"地元野菜やお土産、観光協会の窓口も。"},
-  {id:"misaki-fuke-sanporta", area:"岬町・深日港", cat:"観光案内", name:"深日港観光案内所(サンポルタ)",
+   note:"地元野菜やお土産、観光協会の窓口も。", icons:["food","souvenir","info","cycle","roadstation","boat","snack"],
+   photo:"images/misaki-michinoeki.jpg"},
+  {id:"misaki-fuke-sanporta", area:"岬町・阪南市", cat:"観光案内", name:"深日港観光案内所(サンポルタ)",
    lat:34.3188701, lng:135.1424707, placeId:"ChIJ__-PfdyvAGARqveNxISfhQo",
-   note:"淡路島(洲本方面)行き高速船の窓口。お土産・レンタサイクルあり。"},
-  {id:"misaki-info", area:"岬町・深日港", cat:"観光案内", name:"岬町観光案内所",
-   lat:34.3247677, lng:135.1611651, placeId:"ChIJdxTLLOaxAGARFT3wE4PZDuk",
-   note:"みさき公園駅そば。パンフレットや地元グッズ。"},
+   note:"淡路島(洲本方面)行き高速船の窓口。お土産・レンタサイクルあり。", icons:["info","souvenir","cycle","boat"],
+   photo:"images/misaki-fuke-sanporta.jpg"},
+  {id:"misaki-komeda-hannan", area:"岬町・阪南市", cat:"喫茶店", name:"コメダ珈琲店 阪南店",
+   lat:34.3552744, lng:135.2450807, placeId:null,
+   mapUrl:"https://www.google.com/maps/place/%E3%82%B3%E3%83%A1%E3%83%80%E7%8F%88%E7%90%B2%E5%BA%97+%E9%98%AA%E5%8D%97%E5%BA%97/@34.3552913,135.2450532,60m/data=!3m1!1e3!4m12!1m5!3m4!2zMzTCsDIxJzE5LjAiTiAxMzXCsDE0JzQyLjMiRQ!8m2!3d34.3552744!4d135.2450807!3m5!1s0x6000b71f04f34d01:0x71fcf487d5c4a48f!8m2!3d34.3552375!4d135.2450811!16s%2Fg%2F12m9mf859?entry=ttu&g_ep=EgoyMDI2MDkxNi4wIKXMDSoASAFQAw%3D%3D",
+   note:"南海本線 尾崎駅から徒歩11分。", icons:["food","snack"], tags:["komeda"],
+   photo:"images/komeda-shironoir.jpg"},
+  {id:"hannan-pichipichi-beach", area:"岬町・阪南市", cat:"ビーチ", name:"ぴちぴちビーチ（箱作海水浴場）",
+   lat:34.341318, lng:135.200939, placeId:null,
+   mapUrl:"https://www.google.com/maps/place/%E7%AE%B1%E4%BD%9C%E6%B5%B7%E6%B0%B4%E6%B5%B4%E5%A0%B4(%E3%81%B4%E3%81%A1%E3%81%B4%E3%81%A1%E3%83%93%E3%83%BC%E3%83%81)/@34.341318,135.200939,1177m/data=!3m1!1e3!4m12!1m5!3m4!2zMzTCsDIwJzI4LjciTiAxMzXCsDEyJzAzLjQiRQ!8m2!3d34.341318!4d135.200939!3m5!1s0x6000b0e646105731:0xba787d5ee4c2a561!8m2!3d34.340843!4d135.200011!16s%2Fg%2F1pv0w3fw?entry=ttu&g_ep=EgoyMDI2MDkxNi4wIKXMDSoASAFQAw%3D%3D",
+   note:"南海本線 箱作駅から徒歩15分。季節営業・不定休、BBQコーナー・海の家あり。", icons:["beach"],
+   photo:"images/hannan-pichipichi-beach.jpg"},
+  {id:"rinku-outlet", area:"泉佐野・りんくう", cat:"アウトレットモール", name:"りんくうプレミアム・アウトレット",
+   lat:34.4064643, lng:135.2954403, placeId:null,
+   mapUrl:"https://www.google.com/maps/place/%E3%82%8A%E3%82%93%E3%81%8F%E3%81%86%E3%83%97%E3%83%AC%E3%83%9F%E3%82%A2%E3%83%A0%E3%83%BB%E3%82%A2%E3%82%A6%E3%83%88%E3%83%AC%E3%83%83%E3%83%88/@34.4090228,135.2913815,1691m/data=!3m1!1e3!4m12!1m5!3m4!2zMzTCsDI0JzQ3LjkiTiAxMzXCsDE0JzUxLjciRQ!8m2!3d34.4133!4d135.2477!3m5!1s0x6000b7fecaf2d427:0xc43f6413a1b0f082!8m2!3d34.4064643!4d135.2954403!16s%2Fg%2F120lwv5b?entry=ttu&g_ep=EgoyMDI2MDkxNi4wIKXMDSoASAFQAw%3D%3D",
+   note:"国内最大級のアウトレットモール。", icons:["shopping","train"],
+   photo:"images/rinku-outlet.png"},
+  {id:"rinku-seacle", area:"泉佐野・りんくう", cat:"ショッピングモール", name:"りんくうプレジャータウン シークル",
+   lat:34.4088471, lng:135.2974153, placeId:null,
+   mapUrl:"https://www.google.com/maps/place/%E3%82%8A%E3%82%93%E3%81%8F%E3%81%86%E3%83%97%E3%83%AC%E3%82%B8%E3%83%A3%E3%83%BC%E3%82%BF%E3%82%A6%E3%83%B3+%E3%82%B7%E3%83%BC%E3%82%AF%E3%83%AB/@34.4101537,135.2953786,743m/data=!3m1!1e3!4m12!1m5!3m4!2zMzTCsDI1JzE1LjYiTiAxMzXCsDE0JzI4LjMiRQ!8m2!3d34.421!4d135.2412!3m5!1s0x6000b7fe670e8953:0xd05f26e53f1fa8f9!8m2!3d34.4088471!4d135.2974153!16s%2Fg%2F121_bw6k?entry=ttu&g_ep=EgoyMDI2MDkxNi4wIKXMDSoASAFQAw%3D%3D", closingDate:"2026/10/31",
+   note:"りんくうタウン駅直結。観覧車「りんくうの星」や温泉「りんくうの湯」も。2026年10月31日以降の営業は未定。", icons:["shopping","train"],
+   photo:"images/rinku-seacle.jpg"},
+  {id:"rinku-sennan-park", area:"泉佐野・りんくう", cat:"公園・アウトドア", name:"SENNAN LONG PARK（泉南りんくう公園）&マーブルビーチ",
+   lat:34.381125, lng:135.264189, placeId:null,
+   mapUrl:"https://www.google.com/maps/place/%E6%B3%89%E5%8D%97%E3%82%8A%E3%82%93%E3%81%8F%E3%81%86%E5%85%AC%E5%9C%92%EF%BC%88%E6%B3%89%E5%8D%97%E3%83%AD%E3%83%B3%E3%82%B0%E3%83%91%E3%83%BC%E3%82%AF%EF%BC%89/@34.3791671,135.2606145,1175m/data=!3m1!1e3!4m12!1m5!3m4!2zMzTCsDIyJzUyLjEiTiAxMzXCsDE1JzUxLjEiRQ!8m2!3d34.381125!4d135.264189!3m5!1s0x6000b7fc9f44f8a9:0x8357edaa7cdfe1fc!8m2!3d34.3794368!4d135.2621052!16s%2Fg%2F11j59rzzqv?entry=ttu&g_ep=EgoyMDI2MDkxNi4wIKXMDSoASAFQAw%3D%3D",
+   note:"海辺のアクティビティ・マルシェ・グランピングエリアがある複合リゾート公園。大理石調の白い人工石が敷き詰められたマーブルビーチも隣接。", icons:["food","beach","snack","shopping"],
+   photo:"images/rinku-outlet.png"},
+  {id:"rinku-aeon-sennan", area:"泉佐野・りんくう", cat:"ショッピングモール", name:"イオンモールりんくう泉南",
+   lat:34.380202, lng:135.267325, placeId:null,
+   mapUrl:"https://maps.app.goo.gl/H1x81diuxJ1b43z56",
+   note:"夕陽が美しい泉州最大級の商業施設。コメダ珈琲店あり。", icons:["shopping","snack"], tags:["komeda"],
+   photo:"images/aeon.jpg"},
+  {id:"rinku-onekarubi", area:"泉佐野・りんくう", cat:"焼肉食べ放題", name:"ワンカルビ りんくうタウン店",
+   lat:34.4125538, lng:135.3019064, placeId:null,
+   mapUrl:"https://www.google.com/maps/place/%E7%84%BC%E8%82%89%E3%83%80%E3%82%A4%E3%83%8B%E3%83%B3%E3%82%B0+%E3%83%AF%E3%83%B3%E3%82%AB%E3%83%AB%E3%83%93%E3%82%8A%E3%82%93%E3%81%8F%E3%81%86%E3%82%BF%E3%82%A6%E3%83%B3%E5%BA%97/@34.4111704,135.2990441,827m/data=!3m1!1e3!4m12!1m5!3m4!2zMzTCsDI1JzE5LjIiTiAxMzXCsDE0JzI0LjAiRQ!8m2!3d34.422!4d135.24!3m5!1s0x6000c97176fa269d:0xd3e36fb09ce3685a!8m2!3d34.4125538!4d135.3019064!16s%2Fg%2F11h91j4thk?entry=ttu&g_ep=EgoyMDI2MDkxNi4wIKXMDSoASAFQAw%3D%3D",
+   note:"OMO関西空港のすぐそば、りんくうタウン駅徒歩圏。黒毛和牛・牛タンなど2時間食べ放題。", icons:["food","train"],
+   photo:"https://images.unsplash.com/photo-1708388466726-d042b7138b36?fm=jpg&q=60&w=800&auto=format&fit=crop"},
+  {id:"kix-airport", area:"泉佐野・りんくう", cat:"空港", name:"関西国際空港",
+   lat:34.4345, lng:135.2445, placeId:null,
+   mapUrl:"https://maps.app.goo.gl/4WJjkGnSmM7S2GqQ8",
+   note:"関西の玄関口。免税店・レストランも充実。", icons:["plane","train","food","snack","souvenir","shopping","lodging"],
+   photo:"https://images.unsplash.com/photo-1536883845020-8fde80ddc6f0?fm=jpg&q=60&w=800&auto=format&fit=crop"},
+  {id:"brasserie-nikko-kix", area:"泉佐野・りんくう", cat:"ビュッフェ食べ放題", name:"オールデイダイニング ザ・ブラッスリー",
+   lat:34.436714, lng:135.243021, placeId:null,
+   mapUrl:"https://maps.app.goo.gl/EDwrtK4e8NhTnFD38",
+   note:"ホテル日航関西空港内、関西空港駅直結。朝食・ランチ・土日祝ディナーをバイキングやブッフェとして楽しめる。", icons:["food","train","lodging"],
+   photo:"images/brasserie-nikko-kix.jpg"},
 
   // 淡路島
   {id:"awaji-ashiyu", area:"淡路島", cat:"無料足湯", name:"洲本温泉 潮騒の湯・足湯",
    lat:34.3401113, lng:134.9005861, placeId:"ChIJSwy5GZOxVDURoLgSEfrM8vk",
-   note:"洲本城のある三熊山のふもと。無料・タオル持参。"},
+   note:"洲本城のある三熊山のふもと。無料・タオル持参。", icons:["boat","footbath"],
+   photo:"images/awaji-ashiyu.jpg"},
   {id:"awaji-komichi", area:"淡路島", cat:"レトロな小道", name:"レトロこみち",
    lat:34.3432138, lng:134.8933825, placeId:"ChIJ2dOrvsmxVDUR_0OEpgSC-2M",
-   note:"足湯からすぐ。カフェやかき氷店が並ぶ懐かしい通り。"},
+   note:"足湯からすぐ。カフェやかき氷店が並ぶ懐かしい通り。", icons:["food","snack","boat"],
+   photo:"images/awaji-komichi.jpg"},
   {id:"awaji-library", area:"淡路島", cat:"図書館", name:"洲本図書館",
    lat:34.3460282, lng:134.8945312, placeId:"ChIJAfizLbGxVDURTLkECoJmZPk",
-   note:"赤レンガが美しい図書館。休憩にも◎。"},
-  {id:"awaji-komodo56", area:"淡路島", cat:"商店街", name:"コモード56商店街",
-   lat:34.3414927, lng:134.8945078, placeId:"ChIJedVRKLaxVDURzwoC5H7-lxQ",
-   note:"洲本のアーケード商店街。お土産探しに。"},
-
+   note:"赤レンガが美しい図書館。休憩にも◎。", icons:["boat"],
+   photo:"images/awaji-library.jpg"},
+  {id:"awaji-miketsukuni", area:"淡路島", cat:"物産館", name:"淡路ごちそう館 御食国",
+   lat:34.344532, lng:134.8950958, placeId:null,
+   mapUrl:"https://www.google.com/maps/place/%E6%B7%A1%E8%B7%AF%E3%81%94%E3%81%A1%E3%81%9D%E3%81%86%E9%A4%A8+%E5%BE%A1%E9%A3%9F%E5%9B%BD%EF%BC%88%E3%81%BF%E3%81%91%E3%81%A4%E3%81%8F%E3%81%AB%EF%BC%89/@34.3419659,134.8969446,288a,35y,322.69h,45t/data=!3m1!1e3!4m12!1m5!3m4!2zMzTCsDIwJzQ1LjciTiAxMzTCsDUzJzQwLjMiRQ!8m2!3d34.3460282!4d134.8945312!3m5!1s0x3554b1b721c04369:0x5c029a4c199b2af1!8m2!3d34.344532!4d134.8950958!16s%2Fg%2F1q5bl4mkp?entry=ttu&g_ep=EgoyMDI2MDkxNi4wIKXMDSoASAFQAw%3D%3D",
+   note:"洲本図書館と同じ洲本市民広場内。淡路島の名産品・お土産とレストランが楽しめる大型物産館。", icons:["souvenir","food","snack","boat"],
+   photo:"images/awaji-miketsukuni.jpg"},
   // 和歌山
   {id:"waka-aeon", area:"和歌山", cat:"ショッピングモール", name:"イオンモール和歌山",
    lat:34.2764951, lng:135.1490504, placeId:"ChIJz6PR2P-xAGAR6ixQeFPEww8",
-   note:"和歌山市内へ向かう途中に。何でも揃う。"},
-  {id:"waka-tsutaya", area:"和歌山", cat:"本屋・図書館", name:"蔦屋書店（和歌山市民図書館）",
+   note:"和歌山市内へ向かう途中に。コメダ珈琲店あり。", icons:["shopping","train","snack"],
+   photo:"images/aeon.jpg", eventLabel:"ちいかわ 期間限定 2026/09/18〜10/05", tags:["komeda","chiikawa"]},
+  {id:"waka-tsutaya", area:"和歌山", cat:"本屋・図書館", name:"和歌山市民図書館&蔦屋書店&スターバックス",
    lat:34.2367241, lng:135.1675279, placeId:"ChIJweOPKfOzAGARDRU7z1CuGts",
-   note:"3階建て、屋上から和歌山城が見える。館内にスタバも。"},
-  {id:"waka-starbucks", area:"和歌山", cat:"カフェ", name:"スターバックス（蔦屋書店内）",
-   lat:34.2368221, lng:135.1673221, placeId:"ChIJa_fiEBGzAGARg9I8BBcDcS4",
-   note:"図書館1階、日当たり良好。"},
-  {id:"waka-labo", area:"和歌山", cat:"スパイスカレー", name:"spice dining LABO",
-   lat:34.2313542, lng:135.1762192, placeId:"ChIJP9aO-EazAGARFaDa8ca-MJQ",
-   note:"ライオンホルモンの近く。2種盛りカレーが人気。"},
+   note:"屋上から和歌山城が見える。館内にスタバも。", icons:["food","book","snack","train"],
+   photo:"images/waka-tsutaya-library.jpg"},
   {id:"waka-lion", area:"和歌山", cat:"ホルモン", name:"ライオンホルモン",
    lat:34.2351891, lng:135.1686149, placeId:"ChIJDdzRLu2yAGAR_XPjn53pyTo",
-   note:"和歌山で人気の老舗ホルモン焼肉。"},
+   note:"和歌山で人気の老舗ホルモン焼肉。", icons:["food"],
+   photo:"https://images.unsplash.com/photo-1776855206994-01f38d5da8c9?fm=jpg&q=60&w=800&auto=format&fit=crop"},
   {id:"waka-yamatame", area:"和歌山", cat:"和歌山ラーメン", name:"山為食堂",
    lat:34.2332887, lng:135.1711249, placeId:"ChIJ3UUFkOuyAGARNCDxaztJvrs",
-   note:"50年以上続く老舗。とんこつ醤油の濃厚ラーメン。"},
-  {id:"waka-rico-cafe", area:"和歌山", cat:"カフェ&バー", name:"Una rama de RICO",
-   lat:34.232148, lng:135.1795422, placeId:"ChIJvwnVbJSzAGAR34ufXtht-60",
-   note:"ゲストハウスRICO併設のカフェ&バー。バスクチーズケーキが名物。"},
-  {id:"waka-rico-guesthouse", area:"和歌山", cat:"ゲストハウス", name:"ゲストハウス RICO",
+   note:"50年以上続く老舗。とんこつ醤油の濃厚ラーメン。営業日要確認。", icons:["food"],
+   photo:"https://images.unsplash.com/photo-1632709810780-b5a4343cebec?fm=jpg&q=60&w=800&auto=format&fit=crop"},
+  {id:"waka-rico-guesthouse", area:"和歌山", cat:"ゲストハウス", name:"ゲストハウス&カフェバーRICO",
    lat:34.2322031, lng:135.1795692, placeId:"ChIJBeK4DN2yAGARrbxlqBLGq9M",
-   note:"落ち着いた雰囲気でくつろげる宿。"},
-  {id:"waka-mizube-bar", area:"和歌山", cat:"バー", name:"水辺のバー（京橋・市堀川沿い）",
-   lat:34.234, lng:135.180, placeId:null,
-   note:"和歌山市駅近く、市堀川の京橋のたもとに隠れ家的バーがあるとの情報あり。店名は現地で要確認。"},
+   note:"落ち着いた雰囲気でくつろげる宿。", icons:["lodging","food","snack"],
+   photo:"images/waka-rico-guesthouse.png"},
   {id:"waka-rubluck", area:"和歌山", cat:"カフェ", name:"rub luck cafe（ラブラックカフェ）",
    lat:34.0611, lng:135.1381, placeId:null,
-   note:"有田市千田、海沿いの倉庫を改装したカフェ。2階からオーシャンビュー。土日祝11時〜日没まで営業。"},
+   mapUrl:"https://maps.app.goo.gl/N8cyayrHWMAGqn918",
+   note:"海沿いのオーシャンビュー倉庫カフェ。営業日要確認。", icons:["food","snack"],
+   photo:"images/waka-rubluck.jpg"},
   {id:"waka-marusan", area:"和歌山", cat:"和歌山ラーメン", name:"中華そば専門 丸三",
-   lat:34.1973, lng:135.1778, placeId:null,
-   note:"和歌山市塩屋。とんこつ醤油の老舗和歌山ラーメン。地元客に愛される一杯。"},
+   lat:34.1972945, lng:135.1778412, placeId:null,
+   mapUrl:"https://www.google.com/maps/place/%E4%B8%AD%E8%8F%AF%E3%81%9D%E3%81%B0+%E4%B8%B8%E4%B8%89/@34.1972903,135.1776991,60m/data=!3m1!1e3!4m12!1m5!3m4!2zMzTCsDExJzUwLjMiTiAxMzXCsDEwJzQwLjEiRQ!8m2!3d34.1973!4d135.1778!3m5!1s0x60074d22ae88deb1:0xcee394db6bd4376e!8m2!3d34.1972945!4d135.1778412!16s%2Fg%2F1td69v01?entry=ttu&g_ep=EgoyMDI2MDkxNi4wIKXMDSoASAFQAw%3D%3D",
+   note:"とんこつ醤油の老舗和歌山ラーメン。営業日要確認。", icons:["food"],
+   photo:"https://images.unsplash.com/photo-1632709810780-b5a4343cebec?fm=jpg&q=60&w=800&auto=format&fit=crop"},
   {id:"waka-thepublic", area:"和歌山", cat:"カフェ&バー", name:"the public（本町公園）",
    lat:34.2359, lng:135.1757, placeId:null,
-   note:"本町公園内の本町プランテ1F。昼はランチ・ピザ、夜は肉料理とお酒。半屋外ドームや芝生広場でピクニック気分も。ペット可・ドッグランあり。"}
+   mapUrl:"https://maps.app.goo.gl/J8uWf7QsgquKCGqE9",
+   note:"本町公園内。昼はランチ・ピザ、夜は肉料理とお酒。半屋外ドームや芝生広場でピクニック気分も。ペット可・ドッグランあり。", icons:["food","snack"],
+   photo:"https://images.unsplash.com/photo-1596120263564-fc7ee2d8538d?fm=jpg&q=60&w=800&auto=format&fit=crop"},
+  {id:"waka-komeda-otani", area:"和歌山", cat:"喫茶店", name:"コメダ珈琲店 和歌山大谷店",
+   lat:34.260341, lng:135.181438, placeId:null,
+   mapUrl:"https://maps.app.goo.gl/ug7NNc8yAgS83Zd87",
+   note:"南海本線・加太線 紀ノ川駅から徒歩19分。", icons:["food","snack"], tags:["komeda"],
+   photo:"images/komeda-shironoir.jpg"},
+  {id:"waka-casadecha", area:"和歌山", cat:"隠れ家カフェ", name:"CASADÉCHA1472",
+   lat:34.2838442, lng:135.311205, placeId:null,
+   mapUrl:"https://www.google.com/maps/place/CASAD%C3%89CHA1472/@34.283836,135.3110105,160m/data=!3m1!1e3!4m12!1m5!3m4!2zMzTCsDE3JzAxLjkiTiAxMzXCsDE4JzQwLjQiRQ!8m2!3d34.283853!4d135.311215!3m5!1s0x6000cab0f5bc3b57:0x9092ebcca008af62!8m2!3d34.2838442!4d135.311205!16s%2Fg%2F11b6_t8sg0?entry=ttu&g_ep=EgoyMDI2MDkxNi4wIKXMDSoASAFQAw%3D%3D",
+   note:"地元のオシャレな人なら知ってる隠れ家的カフェ。外観から想像できないレトロな可愛いカフェ。営業日要確認。", icons:["food"],
+   photo:"images/waka-casadecha.png", instagram:"https://www.instagram.com/casadecha1472/"},
+  {id:"waka-bringbookstore", area:"和歌山", cat:"ブックカフェ", name:"BRING BOOK STORE",
+   lat:34.2251, lng:135.17142, placeId:null,
+   mapUrl:"https://maps.app.goo.gl/DYYvUfpA9vqViWo47",
+   note:"和歌山県立近代美術館内。木の梁とブックシェルフに囲まれた開放的なブックカフェ。営業日要確認。", icons:["snack"],
+   photo:"images/waka-bringbookstore.png", instagram:"https://www.instagram.com/bringbookstore/"},
+  {id:"waka-cups-cupcakes", area:"和歌山", cat:"カップケーキ専門店", name:"CUPS coffee & cupcakes",
+   lat:34.2240044, lng:135.1739459, placeId:null,
+   mapUrl:"https://maps.app.goo.gl/Ksa7E9Z3Gy8H6za39",
+   note:"オシャレなカップケーキとコーヒーのお店。営業日要確認。", icons:["snack"],
+   photo:"https://images.unsplash.com/photo-1486427944299-d1955d23e34d?fm=jpg&q=60&w=800&auto=format&fit=crop"},
+  {id:"waka-john-marbles-burger", area:"和歌山", cat:"ハンバーガー", name:"JOHN MARBLE'S BURGER",
+   lat:34.2319704, lng:135.1693695, placeId:null,
+   mapUrl:"https://maps.app.goo.gl/1LaePB6Fpuj949PR9",
+   note:"営業日要確認。", icons:["food"],
+   photo:"https://images.unsplash.com/photo-1766589221195-34da47a852c5?fm=jpg&q=60&w=800&auto=format&fit=crop"},
+  {id:"waka-favorite-coffee", area:"和歌山", cat:"カフェ", name:"フェイバリットコーヒー",
+   lat:34.2320097, lng:135.1724962, placeId:null,
+   mapUrl:"https://www.google.com/maps/place/%E3%83%95%E3%82%A7%E3%82%A4%E3%83%90%E3%83%AA%E3%83%83%E3%83%88%E3%82%B3%E3%83%BC%E3%83%92%E3%83%BC/@34.2319745,135.1726262,6a,60y,262.39h,90.54t/data=!3m7!1e1!3m5!1suyqI3KXss9RTwXmdIEdatA!2e0!6shttps:%2F%2Fstreetviewpixels-pa.googleapis.com%2Fv1%2Fthumbnail%3Fcb_client%3Dmaps_sv.tactile%26w%3D900%26h%3D600%26pitch%3D-0.5425884386719133%26panoid%3DuyqI3KXss9RTwXmdIEdatA%26yaw%3D262.3861826427135!7i16384!8i8192!4m6!3m5!1s0x6000b2ea2ea08511:0xda97b316fc32b2e1!8m2!3d34.2320097!4d135.1724962!16s%2Fg%2F11dfgpp1gd?entry=ttu&g_ep=EgoyMDI2MDkxNi4wIKXMDSoASAFQAw%3D%3D",
+   note:"本格コーヒーのお店。コーヒー好きならここは外せない。営業日要確認。", icons:["snack"],
+   photo:"https://images.unsplash.com/photo-1507133750040-4a8f57021571?fm=jpg&q=60&w=800&auto=format&fit=crop"}
 ];
 
-const AREAS = ["すべて", "なんば", "天王寺", "岬町・深日港", "淡路島", "和歌山"];
+const AREAS = ["すべて", "なんば", "天王寺", "岬町・阪南市", "泉佐野・りんくう", "淡路島", "和歌山"];
+const TAG_TABS = [
+  {key:"komeda", label:"コメダ",
+   icon:'<path d="M3 7h13v7a4 4 0 0 1 -4 4h-5a4 4 0 0 1 -4 -4v-7"/><path d="M16 8h2a2 2 0 0 1 2 2a2 2 0 0 1 -2 2h-2"/><path d="M6 2c0 1 -1 1 -1 2"/><path d="M10 2c0 1 -1 1 -1 2"/>'},
+  {key:"chiikawa", label:"ちいかわ",
+   icon:'<ellipse cx="8.7" cy="5" rx="1.6" ry="4" transform="rotate(-15 8.7 5)"/><ellipse cx="15.3" cy="5" rx="1.6" ry="4" transform="rotate(15 15.3 5)"/><circle cx="12" cy="14" r="5.5"/>'}
+];
 let currentArea = "すべて";
+let currentTag = null;
 let currentMode = "driving";
 let favorites = [];
 
 function mapsUrl(spot){
+  if(spot.mapUrl) return spot.mapUrl;
   const q = spot.placeId ? `${spot.lat},${spot.lng}&query_place_id=${spot.placeId}` : `${spot.lat},${spot.lng}`;
   return `https://www.google.com/maps/search/?api=1&query=${q}`;
 }
@@ -635,9 +810,20 @@ function renderTabs(){
   tabsEl.innerHTML = '';
   AREAS.forEach(area=>{
     const el = document.createElement('div');
-    el.className = 'tab' + (area===currentArea ? ' active' : '');
+    el.className = 'tab' + (!currentTag && area===currentArea ? ' active' : '');
     el.textContent = area === "すべて" ? "すべて" : area + (area==="なんば"||area==="天王寺"||area==="和歌山" ? "" : "");
-    el.onclick = ()=>{ currentArea = area; render(); };
+    el.onclick = ()=>{ currentArea = area; currentTag = null; render(); };
+    tabsEl.appendChild(el);
+  });
+  TAG_TABS.forEach(tag=>{
+    const el = document.createElement('div');
+    el.className = 'tab' + (currentTag===tag.key ? ' active' : '');
+    el.innerHTML = `
+      <span style="display:inline-flex;align-items:center;gap:4px;">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${tag.icon}</svg>
+        ${tag.label}
+      </span>`;
+    el.onclick = ()=>{ currentTag = (currentTag===tag.key ? null : tag.key); render(); };
     tabsEl.appendChild(el);
   });
 }
@@ -651,11 +837,11 @@ function render(){
   const listsEl = document.getElementById('lists');
   listsEl.innerHTML = '';
 
-  let areasToShow = currentArea === "すべて" ? AREAS.slice(1) : [currentArea];
+  let areasToShow = currentTag ? AREAS.slice(1) : (currentArea === "すべて" ? AREAS.slice(1) : [currentArea]);
   let any = false;
 
   areasToShow.forEach(area=>{
-    const spots = SPOTS.filter(s=>s.area===area);
+    const spots = SPOTS.filter(s=>s.area===area && (!currentTag || (s.tags||[]).includes(currentTag)));
     if(spots.length===0) return;
     any = true;
 
@@ -674,24 +860,28 @@ function render(){
       card.style.setProperty('--area-color', AREA_COLORS[area]);
       card.innerHTML = `
         <div class="card-inner">
-          <div class="card-photo">
+          <div class="card-photo">${spot.photo ? `<img src="${spot.photo}" alt="${spot.name}" loading="lazy">` : `
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
               <path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/>
               <circle cx="12" cy="13" r="3"/>
-            </svg>
+            </svg>`}
           </div>
           <div class="card-content">
             <div class="card-top">
               <div class="card-title-wrap">
                 <span class="cat">${spot.cat}</span>
+                ${spot.closingDate ? `<span class="closing-tag">⚠ ${spot.closingDate} 閉業</span>` : ''}
+                ${spot.eventLabel ? `<span class="event-tag">${spot.eventLabel}</span>` : ''}
                 <div class="name">${spot.name}</div>
                 <div class="note">${spot.note}</div>
               </div>
               <button class="fav-btn ${isFav?'active':''}" aria-label="お気に入り">${isFav?'♥':'♡'}</button>
             </div>
-            <div class="cat-icons">${renderCategoryIcons()}</div>
+            <div class="cat-icons">${renderCategoryIcons(spot.icons)}</div>
             <div class="actions">
               <a href="${mapsUrl(spot)}" target="_blank" rel="noopener">地図で見る</a>
+              ${spot.website ? `<a href="${spot.website}" target="_blank" rel="noopener">公式サイト</a>` : ''}
+              ${spot.instagram ? `<a href="${spot.instagram}" target="_blank" rel="noopener">Instagram</a>` : ''}
               <a class="route" href="${routeUrl(spot, currentMode)}" target="_blank" rel="noopener">${currentMode==='driving'?'車でルート':'電車でルート'}</a>
             </div>
           </div>
@@ -801,6 +991,7 @@ function closeFavSheet(){
 document.getElementById('navFavBtn').onclick = openFavSheet;
 document.getElementById('sheetOverlay').onclick = closeFavSheet;
 
+renderIconLegend();
 loadFavorites();
 </script>
 
