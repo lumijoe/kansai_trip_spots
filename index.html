@@ -49,7 +49,7 @@
       .header-top {
         display: flex;
         align-items: flex-start;
-        justify-content: space-between;
+        justify-content: flex-end;
         gap: 8px;
         margin-bottom: 8px;
       }
@@ -168,6 +168,15 @@
       .mode-icon {
         width: 22px;
         height: 22px;
+      }
+      .mode-label {
+        display: inline-flex;
+        align-items: center;
+        gap: 2px;
+      }
+      .ext-link-icon {
+        width: 11px;
+        height: 11px;
       }
 
       .tabs {
@@ -327,10 +336,17 @@
         align-items: center;
         gap: 5px;
         font-size: 10.5px;
+        font-family: inherit;
         color: var(--ink-soft);
         background: var(--card);
+        border: 1.5px solid transparent;
         border-radius: 999px;
         padding: 4px 10px 4px 4px;
+        cursor: pointer;
+      }
+      .icon-legend .legend-item.active {
+        border-color: var(--ink);
+        color: var(--ink);
       }
       .icon-legend .legend-item .icon-badge {
         width: 22px;
@@ -886,7 +902,6 @@
   <body>
     <header>
       <div class="header-top">
-        <div class="stamp">TRIP NOTE ・ 大阪 → 和歌山 → 淡路島</div>
         <div class="header-controls">
           <div class="view-toggle" id="viewToggle">
             <button
@@ -963,10 +978,6 @@
           </div>
         </div>
       </div>
-      <h1>おでかけスポットまとめ</h1>
-      <p class="sub">
-        気になる場所はハートで「お気に入り」。移動手段を選んでルートを開けます。
-      </p>
     </header>
 
     <div class="controls">
@@ -979,9 +990,26 @@
           <svg class="mode-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 4l1.5 -3h3l1.5 3"/><rect x="4" y="4" width="16" height="11" rx="3"/><path d="M4 10h16"/><path d="M9 4v6"/><path d="M15 4v6"/><circle cx="8" cy="18" r="1.5"/><circle cx="16" cy="18" r="1.5"/><path d="M6 15l-1.5 3"/><path d="M18 15l1.5 3"/></svg>
           電車で
         </div>
-        <div class="mode-btn" data-mode="ferry">
+        <div
+          class="mode-btn"
+          data-mode="ferry"
+          aria-label="船で（外部サイトが開きます）"
+        >
           <svg class="mode-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 20a2.4 2.4 0 0 0 2 1a2.4 2.4 0 0 0 2 -1a2.4 2.4 0 0 1 2 -1a2.4 2.4 0 0 1 2 1a2.4 2.4 0 0 0 2 1a2.4 2.4 0 0 0 2 -1a2.4 2.4 0 0 1 2 -1a2.4 2.4 0 0 1 2 1a2.4 2.4 0 0 0 2 1a2.4 2.4 0 0 0 2 -1"/><path d="M4 18l-1 -5h18l-2 4"/><path d="M5 13v-6h8l4 6"/><path d="M7 7v-4h-1"/></svg>
-          船で
+          <span class="mode-label"
+            >船で<svg
+              class="ext-link-icon"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              ><path d="M12 6h-6a2 2 0 0 0 -2 2v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-6" /><path
+                d="M11 13l9 -9"
+              /><path d="M15 4h5v5" /></svg
+          ></span>
         </div>
       </div>
 
@@ -1011,10 +1039,23 @@
     <div class="footer-note">
       ※ ルートボタンは現在地からの Google
       マップのルートを開きます（出発地は開いた画面で変更できます）。<br />
-      ※
-      岬町・阪南市からは高速船で淡路島(洲本方面)へ渡れます。深日港の観光案内所でチケット・時刻を確認できます。<br />
-      ※
-      位置情報が確定できなかった一部スポット（ぶらくり丁のカフェ・ジェラート店・水辺のバー）はおおよその場所です。現地で商店街を歩いて探すのがおすすめです。
+      ※ 岬町・阪南市からは高速船で淡路島(洲本方面)へ渡れます。<a
+        href="https://fuke-sumotoliner.com/"
+        target="_blank"
+        rel="noopener"
+        >詳しくはこちら<svg
+          class="ext-link-icon"
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          ><path d="M12 6h-6a2 2 0 0 0 -2 2v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-6" /><path
+            d="M11 13l9 -9"
+          /><path d="M15 4h5v5" /></svg
+      ></a>
     </div>
 
     <div class="bottom-nav">
@@ -1145,8 +1186,17 @@
         const el = document.getElementById("iconLegend");
         el.innerHTML = CATEGORY_ICONS.map(
           (ic) =>
-            `<span class="legend-item">${iconBadge(ic)}${ic.label}</span>`,
+            `<button class="legend-item${moodFilter === ic.name ? " active" : ""}" data-legend-icon="${ic.name}">${iconBadge(ic)}${ic.label}</button>`,
         ).join("");
+        el.querySelectorAll(".legend-item").forEach((btn) => {
+          btn.onclick = () => {
+            moodFilter =
+              moodFilter === btn.dataset.legendIcon
+                ? null
+                : btn.dataset.legendIcon;
+            render();
+          };
+        });
       }
 
       function renderMoodSection() {
@@ -1432,6 +1482,19 @@
 
         // 淡路島
         {
+          id: "awaji-port-terminal",
+          area: "淡路島",
+          cat: "岬町への乗船場",
+          name: "洲本ポートターミナルビル",
+          lat: 34.3463945,
+          lng: 134.8993758,
+          mapUrl:
+            "https://www.google.com/maps/place/%E6%B7%B1%E6%97%A5%E6%B4%B2%E6%9C%AC%E3%83%A9%E3%82%A4%E3%83%8A%E3%83%BC%E5%88%B8%E5%A3%B2%E5%A0%B4%E6%89%80/@34.3462414,134.8990581,20.17z/data=!3m1!5s0x3554b1bae3035db1:0x5b6c283bb2addcf0!4m6!3m5!1s0x3554b1000e0c2f21:0xf49d12a877e8bb5b!8m2!3d34.3463945!4d134.8993758!16s%2Fg%2F11wjplpcng",
+          note: "岬町・深日港への高速船ターミナル",
+          icons: ["snack", "info", "boat"],
+          photo: "images/awaji-port-terminal.jpg",
+        },
+        {
           id: "awaji-ashiyu",
           area: "淡路島",
           cat: "無料足湯",
@@ -1440,7 +1503,7 @@
           lng: 134.9005861,
           placeId: "ChIJSwy5GZOxVDURoLgSEfrM8vk",
           note: "洲本城のある三熊山のふもと。無料・タオル持参",
-          icons: ["boat", "footbath"],
+          icons: ["footbath"],
           photo: "images/awaji-ashiyu.jpg",
         },
         {
@@ -1452,7 +1515,7 @@
           lng: 134.8933825,
           placeId: "ChIJ2dOrvsmxVDUR_0OEpgSC-2M",
           note: "足湯からすぐ。カフェやかき氷店が並ぶ懐かしい通り",
-          icons: ["food", "snack", "boat", "info"],
+          icons: ["food", "snack", "info"],
           photo: "images/awaji-komichi.jpg",
         },
         {
@@ -1464,7 +1527,7 @@
           lng: 134.8945312,
           placeId: "ChIJAfizLbGxVDURTLkECoJmZPk",
           note: "赤レンガが美しい図書館。休憩にも◎",
-          icons: ["boat", "book", "info"],
+          icons: ["book", "info"],
           photo: "images/awaji-library.jpg",
         },
         {
@@ -1478,7 +1541,7 @@
           mapUrl:
             "https://www.google.com/maps/place/%E6%B7%A1%E8%B7%AF%E3%81%94%E3%81%A1%E3%81%9D%E3%81%86%E9%A4%A8+%E5%BE%A1%E9%A3%9F%E5%9B%BD%EF%BC%88%E3%81%BF%E3%81%91%E3%81%A4%E3%81%8F%E3%81%AB%EF%BC%89/@34.3419659,134.8969446,288a,35y,322.69h,45t/data=!3m1!1e3!4m12!1m5!3m4!2zMzTCsDIwJzQ1LjciTiAxMzTCsDUzJzQwLjMiRQ!8m2!3d34.3460282!4d134.8945312!3m5!1s0x3554b1b721c04369:0x5c029a4c199b2af1!8m2!3d34.344532!4d134.8950958!16s%2Fg%2F1q5bl4mkp?entry=ttu&g_ep=EgoyMDI2MDkxNi4wIKXMDSoASAFQAw%3D%3D",
           note: "洲本図書館と同じ洲本市民広場内。淡路島の名産品・お土産とレストランが楽しめる大型物産館",
-          icons: ["shopping", "food", "snack", "boat", "info"],
+          icons: ["shopping", "food", "snack", "info"],
           photo: "images/awaji-miketsukuni.jpg",
         },
         // 和歌山
@@ -1715,6 +1778,7 @@
         const travelmode = mode === "ferry" ? "transit" : mode;
         return `https://www.google.com/maps/dir/?api=1&destination=${spot.lat},${spot.lng}&travelmode=${travelmode}`;
       }
+      const FERRY_SITE_URL = "https://fuke-sumotoliner.com/";
 
       async function loadFavorites() {
         try {
@@ -1795,6 +1859,7 @@
         }
 
         renderTabs();
+        renderIconLegend();
         document.querySelectorAll(".mode-btn").forEach((b) => {
           b.classList.toggle("active", b.dataset.mode === currentMode);
         });
@@ -1851,7 +1916,7 @@
             <div class="actions">
               ${mapLinkHtml}
               ${spot.website ? `<a href="${spot.website}" target="_blank" rel="noopener">公式サイト</a>` : ""}
-              <a class="route" href="${routeUrl(spot, currentMode)}" target="_blank" rel="noopener">${currentMode === "driving" ? "車でルート" : currentMode === "transit" ? "電車でルート" : "船でルート"}</a>
+              <a class="route" href="${routeUrl(spot, currentMode)}" target="_blank" rel="noopener">${currentMode === "driving" ? "車でルート" : "電車でルート"}</a>
             </div>`;
 
             if (viewMode === "card") {
@@ -1916,6 +1981,10 @@
 
       document.querySelectorAll(".mode-btn").forEach((b) => {
         b.onclick = () => {
+          if (b.dataset.mode === "ferry") {
+            window.open(FERRY_SITE_URL, "_blank", "noopener");
+            return;
+          }
           currentMode = b.dataset.mode;
           render();
           renderFavSheet();
@@ -1988,18 +2057,17 @@
       <p class="hint">現在地からスタートし、順番に経由地を回るルートです。Googleマップ側で順番の入れ替えもできます。</p>
     `;
         } else {
-          // transit/ferry mode: Google Maps directions doesn't support multi-stop
+          // transit mode: Google Maps directions doesn't support multi-stop
           // transit routing, so offer one link per spot instead.
-          const label = currentMode === "ferry" ? "船" : "電車";
           const linksHtml = favSpots
             .map(
               (spot) =>
-                `<a href="${routeUrl(spot, currentMode)}" target="_blank" rel="noopener">${spot.name} へ${label}ルート</a>`,
+                `<a href="${routeUrl(spot, currentMode)}" target="_blank" rel="noopener">${spot.name} へ電車ルート</a>`,
             )
             .join("");
           actions.innerHTML = `
       <div class="transit-links">${linksHtml}</div>
-      <p class="hint">${label}ルートは経由地をまとめて指定できないため、1件ずつ開くリンクにしています。</p>
+      <p class="hint">電車ルートは経由地をまとめて指定できないため、1件ずつ開くリンクにしています。</p>
     `;
         }
       }
